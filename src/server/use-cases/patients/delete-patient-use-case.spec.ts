@@ -14,8 +14,11 @@ let patientRepository: PatientRepository;
 describe('Delete Patient Use Case', () => {
 	beforeEach(async () => {
 		patientRepository = new InMemoryPatientsRepository();
-		sut = new DeletePatientUseCase(patientRepository);
 		const userRepository = new InMemoryUsersRepository();
+		sut = new DeletePatientUseCase(
+			patientRepository,
+			userRepository
+		);
 
 		const user = await userRepository.create({
 			name: 'John Doe',

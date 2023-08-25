@@ -3,12 +3,15 @@ import { type UserRepository } from '@/server/repositories/user-repository';
 import { type Patient } from '@prisma/client';
 import { InavalidPageError } from '../errors/invalid-page-error';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { z } from 'zod';
 
-interface ListPatientsUseCaseRequest {
-	userId: string;
-	page: number;
-	query: string;
-}
+export const ListPatientsUseCaseRequest = z.object({
+	userId: z.string(),
+	page: z.number(),
+	query: z.string(),
+});
+
+type ListPatientsUseCaseRequest = z.infer<typeof ListPatientsUseCaseRequest>;
 
 interface ListPatientsUseCaseResponse {
 	patients: Patient[];

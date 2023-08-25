@@ -1,20 +1,8 @@
 import { type AppointmentRepository } from '@/server/repositories/appointment-repository';
 import { type UserRepository } from '@/server/repositories/user-repository';
-import { type Appointment } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { z } from 'zod';
-
-// interface UpdateData {
-// 	appointment_time: Date;
-// }
-
-// interface UpdateAppointmentsUseCaseRequest {
-// 	userId: string;
-// 	patientId: string;
-// 	appointmentId: string;
-// 	data: UpdateData;
-// }
 
 export const UpdateAppointmentsUseCaseRequest = z.object({
 	userId: z.string(),

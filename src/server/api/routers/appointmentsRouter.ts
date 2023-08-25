@@ -2,6 +2,7 @@ import {
 	createTRPCRouter,
 	protectedProcedure,
 } from "@/server/api/trpc";
+
 import { CreateAppointmentUseCaseRequest } from "@/server/use-cases/appointments/create-appointment";
 import { DeleteAppointmentUseCaseRequest } from "@/server/use-cases/appointments/delete-appointment";
 import { GetAppointmentUseCaseRequest } from "@/server/use-cases/appointments/get-appointment";
@@ -20,7 +21,7 @@ const listAppointmentUseCase = MakeListAppointmentsUseCase();
 const updateAppointmentUseCase = MakeUpdateAppointmentsUseCase();
 
 export const appointmentsRouter = createTRPCRouter({
-	createAppointment: protectedProcedure
+	create: protectedProcedure
 		.input(CreateAppointmentUseCaseRequest)
 		.mutation(async ({ input }) => {
 			const appointment = await createAppointmentUseCase.execute(input);
@@ -30,13 +31,13 @@ export const appointmentsRouter = createTRPCRouter({
 			};
 		}),
 
-	deleteAppointment: protectedProcedure
+	delete: protectedProcedure
 		.input(DeleteAppointmentUseCaseRequest)
 		.mutation(async ({ input }) => {
 			await deleteAppointmentUseCase.execute(input);
 		}),
 
-	getAppointment: protectedProcedure
+	get: protectedProcedure
 		.input(GetAppointmentUseCaseRequest)
 		.query(async ({ input }) => {
 			const appointment = await getAppointmentUseCase.execute(input);
@@ -46,7 +47,7 @@ export const appointmentsRouter = createTRPCRouter({
 			};
 		}),
 
-	listAppointments: protectedProcedure
+	list: protectedProcedure
 		.input(ListAppointmentsUseCaseRequest)
 		.query(async ({ input }) => {
 			const appointments = await listAppointmentUseCase.execute(input);
@@ -56,7 +57,7 @@ export const appointmentsRouter = createTRPCRouter({
 			};
 		}),
 		
-	updateAppointment: protectedProcedure
+	update: protectedProcedure
 		.input(UpdateAppointmentsUseCaseRequest)
 		.mutation(async ({ input }) => {
 			const appointment = await updateAppointmentUseCase.execute(input);

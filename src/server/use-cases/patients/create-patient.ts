@@ -2,22 +2,24 @@ import { type Patient } from '@prisma/client';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { z } from 'zod';
 
-interface CreatePatientUseCaseRequest {
-	name: string
-	address?: string
-	age: number
-	email?: string
-	gender?: string
-	observation?: string
-	nationality?: string
-	birthDate?: Date | string
-	modality: string
-	appointment_duration: number
-	appointment_time: Date | string
-	userId: string;
-}
+export const CreatePatientUseCaseRequest = z.object({
+	name: z.string(),
+	address: z.string().optional(),
+	age: z.number(),
+	email: z.string().optional(),
+	gender: z.string().optional(),
+	observation: z.string().optional(),
+	nationality: z.string().optional(),
+	birthDate: z.date().optional(),
+	modality: z.string(),
+	appointment_duration: z.number(),
+	appointment_time: z.date(),
+	userId: z.string(),
+});
 
+type CreatePatientUseCaseRequest = z.infer<typeof CreatePatientUseCaseRequest>;
 
 interface CreatePatientUseCaseResponse {
 	patient: Patient;
