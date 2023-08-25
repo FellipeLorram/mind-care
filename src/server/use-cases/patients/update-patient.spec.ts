@@ -4,7 +4,6 @@ import { InMemoryPatientsRepository } from '@/server/repositories/in-memory/in-m
 import { type Patient } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InMemoryUsersRepository } from '@/server/repositories/in-memory/in-memory-users-repository';
-import { InvalidUserError } from '../errors/invalid-user-error';
 
 let sut: UpdatePatientUseCase;
 let patientRepository: InMemoryPatientsRepository;
@@ -72,7 +71,7 @@ describe('Update Patient Use Case', () => {
 			name: 'John Doe 2',
 			age: 30,
 			address: 'Rua 2',
-		})).rejects.toBeInstanceOf(InvalidUserError);
+		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
 	// it('should not be able update patient if user is not authenticated', () => {

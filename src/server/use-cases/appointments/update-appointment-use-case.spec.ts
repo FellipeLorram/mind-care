@@ -7,8 +7,6 @@ import { InMemoryAppointmentsRepository } from '@/server/repositories/in-memory/
 import { UpdateAppointmentsUseCase } from './update-appointment';
 
 let sut: UpdateAppointmentsUseCase;
-let patientRepository: InMemoryPatientsRepository;
-let appointmentRepository: InMemoryAppointmentsRepository;
 let patient: Patient;
 let userId: string;
 let patientId: string;
@@ -18,8 +16,8 @@ const appointmentDate = new Date();
 describe('Update Patient Use Case', () => {
 	beforeEach(async () => {
 		const userRepository = new InMemoryUsersRepository();
-		patientRepository = new InMemoryPatientsRepository();
-		appointmentRepository = new InMemoryAppointmentsRepository();
+		const patientRepository = new InMemoryPatientsRepository();
+		const appointmentRepository = new InMemoryAppointmentsRepository();
 		sut = new UpdateAppointmentsUseCase(
 			appointmentRepository,
 			userRepository,
@@ -58,11 +56,9 @@ describe('Update Patient Use Case', () => {
 			userId,
 			patientId,
 			appointmentId,
-			data: {
-				appointment_time: new Date(
-					new Date().setHours(new Date().getHours() + 1)
-				),
-			}
+			appointmentTime: new Date(
+				new Date().setHours(new Date().getHours() + 1)
+			),
 		});
 
 		expect(appointment?.appointment_time).not.toBe(appointmentDate);
@@ -73,11 +69,10 @@ describe('Update Patient Use Case', () => {
 			userId,
 			patientId: 'invalid-id',
 			appointmentId,
-			data: {
-				appointment_time: new Date(
-					new Date().setHours(new Date().getHours() + 1)
-				),
-			}
+			appointmentTime: new Date(
+				new Date().setHours(new Date().getHours() + 1)
+			),
+
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
@@ -86,11 +81,9 @@ describe('Update Patient Use Case', () => {
 			userId: 'invalid-id',
 			patientId,
 			appointmentId,
-			data: {
-				appointment_time: new Date(
-					new Date().setHours(new Date().getHours() + 1)
-				),
-			}
+			appointmentTime: new Date(
+				new Date().setHours(new Date().getHours() + 1)
+			),
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
@@ -99,15 +92,10 @@ describe('Update Patient Use Case', () => {
 			userId,
 			patientId,
 			appointmentId: 'invalid-id',
-			data: {
-				appointment_time: new Date(
-					new Date().setHours(new Date().getHours() + 1)
-				),
-			}
+			appointmentTime: new Date(
+				new Date().setHours(new Date().getHours() + 1)
+			),
+
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
-
-	// it('should not be able update patient if user is not authenticated', () => {
-	// 	expect(1).toBe(1);
-	// });
 });

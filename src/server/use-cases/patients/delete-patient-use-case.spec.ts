@@ -4,7 +4,6 @@ import { InMemoryPatientsRepository } from '@/server/repositories/in-memory/in-m
 import { InMemoryUsersRepository } from '@/server/repositories/in-memory/in-memory-users-repository';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
-import { InvalidUserError } from '../errors/invalid-user-error';
 
 let sut: DeletePatientUseCase;
 let patientId: string;
@@ -67,6 +66,6 @@ describe('Delete Patient Use Case', () => {
 				userId: 'invalid-user-id',
 				patientId,
 			});
-		}).rejects.toBeInstanceOf(InvalidUserError);
+		}).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

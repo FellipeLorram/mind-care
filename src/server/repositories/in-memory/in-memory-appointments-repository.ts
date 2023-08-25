@@ -48,7 +48,7 @@ export class InMemoryAppointmentsRepository implements AppointmentRepository {
 		const AppointmentIndex = this.Appointments.findIndex((Appointment) => Appointment.id === id);
 
 		if (AppointmentIndex < 0) {
-			return null;
+			throw new Error('Appointment not found');
 		}
 
 		const Appointment: Appointment = {
