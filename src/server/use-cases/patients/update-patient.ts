@@ -2,26 +2,26 @@ import { type PatientRepository } from '@/server/repositories/patient-repository
 import { type Patient } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InvalidUserError } from '../errors/invalid-user-error';
+import { z } from 'zod';
+import { type UserRepository } from '@/server/repositories/user-repository';
 
-interface UpdateData {
-	name?: string
-	address?: string | null
-	age?: number
-	email?: string | null
-	gender?: string | null
-	observation?: string | null
-	nationality?: string | null
-	birthDate?: Date | string
-	modality?: string | null
-	appointment_duration?: number
-	appointment_time?: Date | string
-}
+export const UpdatePatientUseCaseRequest = z.object({
+	userId: z.string(),
+	patientId: z.string(),
+	name: z.string().optional(),
+	address: z.string().optional(),
+	age: z.number().optional(),
+	email: z.string().optional(),
+	appointment_duration: z.number().optional(),
+	appointment_time: z.string().optional(),
+	birthDate: z.string().optional(),
+	gender: z.string().optional(),
+	observation: z.string().optional(),
+	modality: z.string().optional(),
+	nationality: z.string().optional(),
+});
 
-interface UpdatePatientUseCaseRequest {
-	userId: string;
-	patientId: string;
-	data: UpdateData;
-}
+type UpdatePatientUseCaseRequest = z.infer<typeof UpdatePatientUseCaseRequest>;
 
 interface UpdatePatientUseCaseResponse {
 	patient: Patient;
@@ -30,27 +30,23 @@ interface UpdatePatientUseCaseResponse {
 export class UpdatePatientUseCase {
 	constructor(
 		private patientRepository: PatientRepository,
+		private userRepository: UserRepository,
 	) { }
 
-	async execute({ userId, patientId, data }: UpdatePatientUseCaseRequest): Promise<UpdatePatientUseCaseResponse> {
-		const patientExists = await this.patientRepository.findById(patientId);
+	async execute(data: UpdatePatientUseCaseRequest): Promise<UpdatePatientUseCaseResponse> {
+		const patientExists = await this.patientRepository.findById(data.patientId);
+		const userExists = await this.userRepository.findById(data.userId);
 
-		if (!patientExists) {
+		if (!patientExists || !userExists) {
 			throw new ResourceNotFoundError();
 		}
 
-		if (patientExists.user_id !== userId) {
+		if (patientExists.user_id !== data.userId) {
 			throw new InvalidUserError();
 		}
 
-		const patient = await this.patientRepository.update(patientId, {
-			name: data.name,
-			address: data.address,
-			age: data.age,
-			email: data.email,
-			appointment_duration: data.appointment_duration,
-			appointment_time: data.appointment_time,
-			birthDate: data.birthDate,
+		const patient = await this.patientRepository.update(data.patientId, {
+			...data,
 		});
 
 		return {

@@ -15,7 +15,10 @@ describe('Update Patient Use Case', () => {
 	beforeEach(async () => {
 		const userRepository = new InMemoryUsersRepository();
 		patientRepository = new InMemoryPatientsRepository();
-		sut = new UpdatePatientUseCase(patientRepository);
+		sut = new UpdatePatientUseCase(
+			patientRepository,
+			userRepository,
+		);
 
 		const user = await userRepository.create({
 			name: 'John Doe',
@@ -40,11 +43,10 @@ describe('Update Patient Use Case', () => {
 		const { patient: p } = await sut.execute({
 			userId,
 			patientId: patient.id,
-			data: {
-				name: 'John Doe 2',
-				age: 30,
-				address: 'Rua 2',
-			}
+			name: 'John Doe 2',
+			age: 30,
+			address: 'Rua 2',
+
 		});
 
 		expect(p.age).toBe(30);
@@ -57,11 +59,9 @@ describe('Update Patient Use Case', () => {
 		await expect(() => sut.execute({
 			userId,
 			patientId: 'invalid-id',
-			data: {
-				name: 'John Doe 2',
-				age: 30,
-				address: 'Rua 2',
-			}
+			name: 'John Doe 2',
+			age: 30,
+			address: 'Rua 2',
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
@@ -69,11 +69,9 @@ describe('Update Patient Use Case', () => {
 		await expect(() => sut.execute({
 			userId: 'invalid-id',
 			patientId: patient.id,
-			data: {
-				name: 'John Doe 2',
-				age: 30,
-				address: 'Rua 2',
-			}
+			name: 'John Doe 2',
+			age: 30,
+			address: 'Rua 2',
 		})).rejects.toBeInstanceOf(InvalidUserError);
 	});
 

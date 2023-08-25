@@ -6,20 +6,26 @@ import { InMemoryUsersRepository } from '@/server/repositories/in-memory/in-memo
 
 let sut: GetPatientProfileUseCase;
 let patientRepository: InMemoryPatientsRepository;
+let userId: string;
 
 describe('Get Patient Profile Use Case', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		patientRepository = new InMemoryPatientsRepository();
-		sut = new GetPatientProfileUseCase(patientRepository);
-	});
-
-	it('should be able to get patient profile', async () => {
 		const userRepository = new InMemoryUsersRepository();
+		sut = new GetPatientProfileUseCase(
+			patientRepository,
+			userRepository,
+		);
+
 		const user = await userRepository.create({
 			name: 'john doe',
 			email: 'johndoe@example.com',
 		});
 
+		userId = user.id;
+	});
+
+	it('should be able to get patient profile', async () => {
 		const patient = await patientRepository.create({
 			name: 'any_name',
 			age: 10,
@@ -32,16 +38,29 @@ describe('Get Patient Profile Use Case', () => {
 			nationality: 'any_nationality',
 			appointment_duration: 10,
 			appointment_time: new Date(),
-			user_id: user.id
+			user_id: userId,
 		});
 
 
-		const { patient: patientProfile } = await sut.execute({ patientId: patient.id });
+		const { patient: patientProfile } = await sut.execute({ 
+			patientId: patient.id,
+			userId
+		});
 
 		expect(patientProfile).toEqual(patient);
 	});
 
 	it('should not get patient profile if patient does not exists', async () => {
-		await expect(sut.execute({ patientId: 'invalid-patient-id' })).rejects.toBeInstanceOf(ResourceNotFoundError);
+		await expect(sut.execute({ 
+			patientId: 'invalid-patient-id',
+			userId: 'any_user_id'
+		})).rejects.toBeInstanceOf(ResourceNotFoundError);
+	});
+
+	it('should not get patient profile if user does not exists', async () => {
+		await expect(sut.execute({
+			patientId: 'any_patient_id',
+			userId: 'invalid-user-id'
+		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });
