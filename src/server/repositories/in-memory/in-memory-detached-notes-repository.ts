@@ -42,18 +42,24 @@ export class InMemoryDetachedNotesRepository implements DetachedNoteRepository {
 		return Note;
 	}
 
-	// async delete(id: string) {
-	// 	const NoteIndex = this.Notes.findIndex((Note) => Note.id === id);
+	async delete(id: string) {
+		const NoteIndex = this.notes.findIndex((Note) => Note.id === id);
 
-	// 	if (NoteIndex < 0) {
-	// 		throw new Error('Note not found');
-	// 	}
+		if (NoteIndex < 0) {
+			throw new Error('Note not found');
+		}
 
-	// 	this.Notes.splice(NoteIndex, 1);
-	// }
+		this.notes.splice(NoteIndex, 1);
+	}
 
 	async findById(id: string) {
 		const note = this.notes.find((n) => n.id === id);
 		return note ?? null;
+	}
+
+	async list(patientId: string, page: number) {
+		const notes = this.notes.filter((n) => n.patient_id === patientId);
+
+		return notes.slice((page - 1) * 10, page * 10);
 	}
 } 

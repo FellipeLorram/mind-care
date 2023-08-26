@@ -28,12 +28,19 @@ export class PrismaDetachedNoteRepository implements DetachedNoteRepository {
 		return note;
 	}
 
-	async list(page: number) {
+	async list(patientId: string, page: number) {
 		const notes = await prisma.detachedNote.findMany({
-			skip: (page - 1) * 10,
+			where: { patient_id: patientId },
+			skip: page * 10,
 			take: 10,
 		});
 
 		return notes;
+	}
+
+	async delete(id: string) {
+		await prisma.detachedNote.delete({
+			where: { id },
+		});
 	}
 }

@@ -3,13 +3,16 @@ import { type UserRepository } from '@/server/repositories/user-repository';
 import { ResourceNotFoundError } from '@/server/use-cases/errors/resource-not-found-error';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { type DetachedNoteRepository } from '@/server/repositories/detached-note-repository';
+import { z } from 'zod';
 
-interface UpdateDetachedNoteUseCaseRequest {
-	content: string;
-	patientId: string;
-	userId: string;
-	noteId: string;
-}
+export const UpdateDetachedNoteUseCaseRequest = z.object({
+	content: z.string(),
+	patientId: z.string(),
+	userId: z.string(),
+	noteId: z.string(),
+});
+
+type UpdateDetachedNoteUseCaseRequest = z.infer<typeof UpdateDetachedNoteUseCaseRequest>;
 
 interface UpdateDetachedNoteUseCaseResponse {
 	note: DetachedNote;

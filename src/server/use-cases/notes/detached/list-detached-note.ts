@@ -1,30 +1,30 @@
+import { z } from 'zod';
 import { type DetachedNote } from '@prisma/client';
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { type DetachedNoteRepository } from '@/server/repositories/detached-note-repository';
 import { ResourceNotFoundError } from '@/server/use-cases/errors/resource-not-found-error';
-import { z } from 'zod';
 
-export const CreateDetachedNoteUseCaseRequest = z.object({
-	content: z.string(),
+export const ListDetachedNoteUseCaseRequest = z.object({
 	patientId: z.string(),
 	userId: z.string(),
+	page: z.number().min(1),
 });
 
-type CreateDetachedNoteUseCaseRequest = z.infer<typeof CreateDetachedNoteUseCaseRequest>;
+type ListDetachedNoteUseCaseRequest = z.infer<typeof ListDetachedNoteUseCaseRequest>;
 
-interface CreateDetachedNoteUseCaseResponse {
-	note: DetachedNote;
+interface ListDetachedNoteUseCaseResponse {
+	notes: DetachedNote[];
 }
 
-export class CreateDetachedNoteUseCase {
+export class ListDetachedNoteUseCase {
 	constructor(
 		private notesRepository: DetachedNoteRepository,
 		private userRepository: UserRepository,
 		private patientRepository: PatientRepository,
 	) { }
 
-	async execute(data: CreateDetachedNoteUseCaseRequest): Promise<CreateDetachedNoteUseCaseResponse> {
+	async execute(data: ListDetachedNoteUseCaseRequest): Promise<ListDetachedNoteUseCaseResponse> {
 		const user = await this.userRepository.findById(data.userId);
 		const patient = await this.patientRepository.findById(data.patientId);
 
@@ -32,13 +32,10 @@ export class CreateDetachedNoteUseCase {
 			throw new ResourceNotFoundError();
 		}
 
-		const note = await this.notesRepository.create({
-			content: data.content,
-			patient_id: data.patientId,
-		});
+		const notes = await this.notesRepository.list(data.patientId, data.page);
 
 		return {
-			note
+			notes
 		};
 	}
 }
