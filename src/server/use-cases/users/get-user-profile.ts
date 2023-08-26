@@ -1,10 +1,13 @@
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { type User } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { z } from 'zod';
 
-interface GetUserProfileUseCaseRequest {
-	userId: string;
-}
+export const GetUserProfileUseCaseRequest = z.object({
+	userId: z.string(),
+});
+
+type GetUserProfileUseCaseRequestType = z.infer<typeof GetUserProfileUseCaseRequest>;
 
 interface GetUserProfileUseCaseResponse {
 	user: User;
@@ -13,7 +16,7 @@ interface GetUserProfileUseCaseResponse {
 export class GetUserProfileUseCase {
 	constructor(private userRepository: UserRepository) { }
 
-	async execute({ userId }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
+	async execute({ userId }: GetUserProfileUseCaseRequestType): Promise<GetUserProfileUseCaseResponse> {
 		const user = await this.userRepository.findById(userId);
 
 		if (!user) {

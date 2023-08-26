@@ -30,7 +30,7 @@ export const patientsRouter = createTRPCRouter({
 			};
 		}),
 
-	deletePatient: protectedProcedure
+	delete: protectedProcedure
 		.input(DeletePatientUseCaseRequest)
 		.mutation(async ({ input }) => {
 			await deletePatientUseCase.execute(input);
