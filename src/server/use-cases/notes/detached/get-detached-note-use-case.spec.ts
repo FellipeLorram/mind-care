@@ -65,7 +65,7 @@ describe('Get Single Appointment note Use Case', () => {
 			userId,
 		});
 
-		expect(response.detachedNote).toEqual(detachedNote);
+		expect(response.note).toEqual(detachedNote);
 	});
 
 	it('should not be able to get a single appointment note if user does not exist', async () => {
