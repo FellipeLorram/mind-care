@@ -4,13 +4,23 @@ import { type PatientRepository } from '@/server/repositories/patient-repository
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { ResourceNotFoundError } from '@/server/use-cases/errors/resource-not-found-error';
 import { type Note } from '@prisma/client';
+import { z } from 'zod';
 
-interface GetAppointmentNoteUseCaseRequest {
-	appointmentNoteId: string;
-	userId: string;
-	patientId: string;
-	appointmentId: string;
-}
+// interface GetAppointmentNoteUseCaseRequest {
+// 	appointmentNoteId: string;
+// 	userId: string;
+// 	patientId: string;
+// 	appointmentId: string;
+// }
+
+export const GetAppointmentNoteUseCaseRequest = z.object({
+	appointmentNoteId: z.string(),
+	userId: z.string(),
+	patientId: z.string(),
+	appointmentId: z.string(),
+});
+
+type GetAppointmentNoteUseCaseRequestType = z.infer<typeof GetAppointmentNoteUseCaseRequest>;
 
 interface GetAppointmentNoteUseCaseResponse {
 	appointmentNote: Note;
@@ -29,7 +39,7 @@ export class GetAppointmentNoteUseCase {
 		appointmentId,
 		patientId,
 		userId
-	}: GetAppointmentNoteUseCaseRequest): Promise<GetAppointmentNoteUseCaseResponse> {
+	}: GetAppointmentNoteUseCaseRequestType): Promise<GetAppointmentNoteUseCaseResponse> {
 		const appointmentNote = await this.appointmentNotesRepository.findById(appointmentNoteId);
 		const user = await this.usersRepository.findById(userId);
 		const patient = await this.patientsRepository.findById(patientId);

@@ -7,7 +7,7 @@ import { GetUserProfileUseCaseRequest } from "@/server/use-cases/users/get-user-
 
 const getUserProfileUseCase = MakeGetUserProfileUseCase();
 
-export const appointmentsRouter = createTRPCRouter({
+export const usersRouter = createTRPCRouter({
 	get: protectedProcedure
 		.input(GetUserProfileUseCaseRequest)
 		.query(async ({ input }) => {

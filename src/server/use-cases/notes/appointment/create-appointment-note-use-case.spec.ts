@@ -17,6 +17,7 @@ describe('Create Appointment Note Use Case', () => {
 		const userRepository = new InMemoryUsersRepository();
 		const patientRepository = new InMemoryPatientsRepository();
 		const appointmentRepository = new InMemoryAppointmentsRepository();
+		
 		sut = new CreateAppointmentNoteUseCase(
 			appointmentNoteRepository,
 			userRepository,

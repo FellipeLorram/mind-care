@@ -4,22 +4,26 @@ import { InMemoryAppointmentsRepository } from '@/server/repositories/in-memory/
 import { InMemoryAppointmentNotesRepository } from '@/server/repositories/in-memory/in-memory-notes-repository';
 import { InMemoryUsersRepository } from '@/server/repositories/in-memory/in-memory-users-repository';
 import { ResourceNotFoundError } from '../../errors/resource-not-found-error';
+import { InMemoryPatientsRepository } from '@/server/repositories/in-memory/in-memory-patients-repository';
 
 let sut: UpdateAppointmentNoteUseCase;
 let appointmentId: string;
 let noteId: string;
 let userId: string;
+let patientId: string;
 
 describe('Update Appointment Note Use Case', () => {
 	beforeEach(async () => {
 		const appointmentNotesRepository = new InMemoryAppointmentNotesRepository();
 		const appointmentsRepository = new InMemoryAppointmentsRepository();
 		const usersRepository = new InMemoryUsersRepository();
+		const patientRepository = new InMemoryPatientsRepository();
 
 		sut = new UpdateAppointmentNoteUseCase(
 			appointmentNotesRepository,
 			appointmentsRepository,
-			usersRepository
+			usersRepository,
+			patientRepository
 		);
 
 		const user = await usersRepository.create({
@@ -27,9 +31,17 @@ describe('Update Appointment Note Use Case', () => {
 			email: 'johndoe@example.com',
 		});
 
+		const patient = await patientRepository.create({
+			age: 20,
+			name: 'any_name',
+			modality: 'any_modality',
+			user_id: user.id,
+			appointment_duration: 30,
+			appointment_time: new Date(),
+		});
 
 		const appointment = await appointmentsRepository.create({
-			patient_id: '1',
+			patient_id: patient.id,
 			appointment_time: new Date(),
 		});
 
@@ -41,6 +53,7 @@ describe('Update Appointment Note Use Case', () => {
 		appointmentId = appointment.id;
 		noteId = note.id;
 		userId = user.id;
+		patientId = patient.id;
 	});
 
 	it('should be able update to a note', async () => {
@@ -48,7 +61,7 @@ describe('Update Appointment Note Use Case', () => {
 			appointmentId,
 			content: 'Note 2',
 			noteId,
-			patientId: '1',
+			patientId,
 			userId,
 		});
 
@@ -60,7 +73,7 @@ describe('Update Appointment Note Use Case', () => {
 			appointmentId,
 			content: 'Note 2',
 			noteId: 'invalid-id',
-			patientId: '1',
+			patientId,
 			userId,
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
@@ -70,7 +83,7 @@ describe('Update Appointment Note Use Case', () => {
 			appointmentId: 'invalid-id',
 			content: 'Note 2',
 			noteId,
-			patientId: '1',
+			patientId,
 			userId,
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
@@ -80,8 +93,18 @@ describe('Update Appointment Note Use Case', () => {
 			appointmentId,
 			content: 'Note 2',
 			noteId,
-			patientId: '1',
+			patientId,
 			userId: 'invalid-id',
+		})).rejects.toBeInstanceOf(ResourceNotFoundError);
+	});
+
+	it('should not be able to update a note with an invalid patient id', async () => {
+		await expect(() => sut.execute({
+			appointmentId,
+			content: 'Note 2',
+			noteId,
+			patientId: 'invalid-id',
+			userId,
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

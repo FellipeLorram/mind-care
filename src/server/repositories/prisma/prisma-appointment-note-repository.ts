@@ -45,4 +45,12 @@ export class PrismaAppointmentNoteRepository implements AppointmentNoteRepositor
 
 		return notes;
 	}
+
+	async delete(id: string) {
+		await prisma.note.delete({
+			where: {
+				id,
+			},
+		});
+	}
 }

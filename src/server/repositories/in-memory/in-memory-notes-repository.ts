@@ -53,4 +53,14 @@ export class InMemoryAppointmentNotesRepository implements AppointmentNoteReposi
 		const Note = this.notes.find((n) => n.id === id);
 		return Note ?? null;
 	}
+
+	async delete(id: string) {
+		const noteIndex = this.notes.findIndex((n) => n.id === id);
+
+		if (noteIndex < 0) {
+			throw new Error('Note not found');
+		}
+
+		this.notes.splice(noteIndex, 1);
+	}
 } 

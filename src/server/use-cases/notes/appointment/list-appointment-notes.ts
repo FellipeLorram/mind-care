@@ -5,13 +5,23 @@ import { type UserRepository } from '@/server/repositories/user-repository';
 import { InavalidPageError } from '@/server/use-cases/errors/invalid-page-error';
 import { ResourceNotFoundError } from '@/server/use-cases/errors/resource-not-found-error';
 import { type Note } from '@prisma/client';
+import { z } from 'zod';
 
-interface ListAppointmentNotesRequest {
-	userId: string;
-	appointmentId: string;
-	patientId: string;
-	page: number;
-}
+// interface ListAppointmentNotesRequest {
+// 	userId: string;
+// 	appointmentId: string;
+// 	patientId: string;
+// 	page: number;
+// }
+
+export const ListAppointmentNotesRequest = z.object({
+	userId: z.string(),
+	appointmentId: z.string(),
+	patientId: z.string(),
+	page: z.number(),
+});
+
+type ListAppointmentNotesRequestType = z.infer<typeof ListAppointmentNotesRequest>;
 
 interface ListAppointmentNotesResponse {
 	notes: Note[];
@@ -24,7 +34,7 @@ export class ListAppointmentNotesUseCase {
 		private patientsRepository: PatientRepository,
 		private AppointmentRepository: AppointmentRepository,
 	) { }
-	async execute(data: ListAppointmentNotesRequest): Promise<ListAppointmentNotesResponse> {
+	async execute(data: ListAppointmentNotesRequestType): Promise<ListAppointmentNotesResponse> {
 		if (data.page < 1) {
 			throw new InavalidPageError();
 		}
