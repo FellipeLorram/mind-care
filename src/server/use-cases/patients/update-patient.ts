@@ -2,8 +2,8 @@ import { type PatientRepository } from '@/server/repositories/patient-repository
 import { type Patient } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InvalidUserError } from '../errors/invalid-user-error';
-import { z } from 'zod';
 import { type UserRepository } from '@/server/repositories/user-repository';
+import { z } from 'zod';
 
 export const UpdatePatientUseCaseRequest = z.object({
 	userId: z.string(),
