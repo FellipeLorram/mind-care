@@ -1,7 +1,9 @@
-import { UserAvatar } from "./useAvatar";
+import { UserAvatar } from "./user-avatar";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { LogoBrain } from "@/assets/logo-brain";
+import { buttonVariants } from "../ui/button";
+import { Plus } from "lucide-react";
 
 export function Topbar() {
 	return (
@@ -22,6 +24,21 @@ export function Topbar() {
 					Schedule
 				</NavLink>
 			</div>
+
+			<Link
+				className={buttonVariants({
+					variant: 'secondary',
+					className: 'flex items-center border border-gray-300',
+				})}
+				href='/patients/new'>
+				<Plus 
+					className='w-4 h-4 mr-2'
+				/>
+				<p>
+					Add Patient
+				</p>
+			</Link>
+
 			<UserAvatar />
 		</div>
 	)
