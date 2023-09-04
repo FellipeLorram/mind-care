@@ -35,9 +35,10 @@ describe('Create Appointment Use Case', () => {
 			user_id: user.id,
 			age: 10,
 			name: 'john doe',
-			appointment_duration: 30,
-			appointment_time: new Date(),
-			modality: 'Presencial'
+			modality: 'Presencial',
+			appointment_day: 'monday',
+			appointment_from: '10:00',
+			appointment_to: '11:00',
 		});
 
 		userId = user.id;
