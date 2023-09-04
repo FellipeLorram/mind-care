@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { type Patient, type Prisma } from '@prisma/client';
 import { type PatientRepository } from '../patient-repository';
+import { type daysOfWeek } from '@/lib/days-of-week';
 
 export class InMemoryPatientsRepository implements PatientRepository {
 	private patients: Patient[];
@@ -13,8 +14,6 @@ export class InMemoryPatientsRepository implements PatientRepository {
 		const patient: Patient = {
 			address: data.address ? data.address : null,
 			age: data.age,
-			appointment_duration: data.appointment_duration,
-			appointment_time: new Date(data.appointment_time),
 			email: data.email ? data.email : null,
 			name: data.name,
 			gender: data.gender ? data.gender : null,
@@ -26,6 +25,9 @@ export class InMemoryPatientsRepository implements PatientRepository {
 			updatedAt: new Date(),
 			id: String(this.patients.length + 1),
 			birthDate: data.birthDate ? new Date(data.birthDate) : null,
+			appointment_day: data.appointment_day,
+			appointment_from: data.appointment_from,
+			appointment_to: data.appointment_to,
 		};
 
 		this.patients.push(patient);
@@ -48,8 +50,6 @@ export class InMemoryPatientsRepository implements PatientRepository {
 			user_id: this.patients[patientIndex]!.user_id,
 			address: patient.address ? patient.address as string : this.patients[patientIndex]!.address,
 			age: patient.age ? patient.age as number : this.patients[patientIndex]!.age,
-			appointment_duration: patient.appointment_duration ? patient.appointment_duration as number : this.patients[patientIndex]!.appointment_duration,
-			appointment_time: patient.appointment_time ? new Date(patient.appointment_time as string) : this.patients[patientIndex]!.appointment_time,
 			email: patient.email ? patient.email as string : this.patients[patientIndex]!.email,
 			name: patient.name ? patient.name as string : this.patients[patientIndex]!.name,
 			birthDate: patient.birthDate ? new Date(patient.birthDate as string) : this.patients[patientIndex]!.birthDate,
@@ -57,6 +57,9 @@ export class InMemoryPatientsRepository implements PatientRepository {
 			modality: patient.modality ? patient.modality as string : this.patients[patientIndex]!.modality,
 			nationality: patient.nationality ? patient.nationality as string : this.patients[patientIndex]!.nationality,
 			observation: patient.observation ? patient.observation as string : this.patients[patientIndex]!.observation,
+			appointment_day: patient.appointment_day ? patient.appointment_day as string : this.patients[patientIndex]!.appointment_day,
+			appointment_from: patient.appointment_from ? patient.appointment_from as string : this.patients[patientIndex]!.appointment_from,
+			appointment_to: patient.appointment_to ? patient.appointment_to as string : this.patients[patientIndex]!.appointment_to,
 		};
 
 		return this.patients[patientIndex]!;
@@ -82,4 +85,10 @@ export class InMemoryPatientsRepository implements PatientRepository {
 
 		return patients.slice((page - 1) * 20, page * 20);
 	}
-} 
+
+	async listByUserIdAndAppointmentDay(userId: string, day: daysOfWeek) {
+		const patients = this.patients.filter((patient) => patient.user_id === userId && patient.appointment_day === day);
+
+		return patients;
+	}
+}
