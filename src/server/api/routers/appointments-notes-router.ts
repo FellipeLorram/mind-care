@@ -18,9 +18,12 @@ const deleteAppointmentNoteUseCase = MakeDeleteAppointmentNoteUseCase();
 
 export const appointmentsNotesRouter = createTRPCRouter({
 	create: protectedProcedure
-		.input(CreateAppointmentNoteUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const note = await createAppointmentNoteUseCase.execute(input);
+		.input(CreateAppointmentNoteUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const note = await createAppointmentNoteUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
 			return {
 				note,
@@ -28,9 +31,12 @@ export const appointmentsNotesRouter = createTRPCRouter({
 		}),
 
 	get: protectedProcedure
-		.input(GetAppointmentNoteUseCaseRequest)
-		.query(async ({ input }) => {
-			const { appointmentNote } = await getAppointmentsNoteUseCase.execute(input);
+		.input(GetAppointmentNoteUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const { appointmentNote } = await getAppointmentsNoteUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
 			return {
 				appointmentNote,
@@ -38,9 +44,12 @@ export const appointmentsNotesRouter = createTRPCRouter({
 		}),
 
 	list: protectedProcedure
-		.input(ListAppointmentNotesRequest)
-		.query(async ({ input }) => {
-			const { notes } = await listAppointmentsNotesUseCase.execute(input);
+		.input(ListAppointmentNotesRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const { notes } = await listAppointmentsNotesUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
 			return {
 				notes,
@@ -48,9 +57,12 @@ export const appointmentsNotesRouter = createTRPCRouter({
 		}),
 
 	update: protectedProcedure
-		.input(UpdateAppointmentNoteUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const { note } = await updateAppointmentNoteUseCase.execute(input);
+		.input(UpdateAppointmentNoteUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const { note } = await updateAppointmentNoteUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
 			return {
 				note,
@@ -58,9 +70,12 @@ export const appointmentsNotesRouter = createTRPCRouter({
 		}),
 
 	delete: protectedProcedure
-		.input(DeleteAppointmentNoteUseCaseRequest)
-		.mutation(async ({ input }) => {
-			await deleteAppointmentNoteUseCase.execute(input);
+		.input(DeleteAppointmentNoteUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			await deleteAppointmentNoteUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
 			return {
 				success: true,

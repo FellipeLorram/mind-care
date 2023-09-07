@@ -86,6 +86,7 @@ model Patient {
 
 model Phone {
   number     String  @unique
+  refers_to  String
   patient    Patient @relation(fields: [patient_id], references: [id])
   patient_id String
 

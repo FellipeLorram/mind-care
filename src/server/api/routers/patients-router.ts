@@ -21,25 +21,32 @@ const updatePatientUseCase = MakeUpdatePatientUseCase();
 
 export const patientsRouter = createTRPCRouter({
 	create: protectedProcedure
-		.input(CreatePatientUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const patient = await createPatientUseCase.execute(input);
+		.input(CreatePatientUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const patient = await createPatientUseCase.execute({
+				...input,
+				userId: ctx.session.user.id,
+			});
 
-			return {
-				patient,
-			};
+			return patient
 		}),
 
 	delete: protectedProcedure
-		.input(DeletePatientUseCaseRequest)
-		.mutation(async ({ input }) => {
-			await deletePatientUseCase.execute(input);
+		.input(DeletePatientUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			await deletePatientUseCase.execute({
+				...input,
+				userId: ctx.session.user.id,
+			});
 		}),
 
 	getProfile: protectedProcedure
-		.input(GetPatientProfileUseCaseRequest)
-		.query(async ({ input }) => {
-			const patient = await getPatientProfileUseCase.execute(input);
+		.input(GetPatientProfileUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const patient = await getPatientProfileUseCase.execute({
+				...input,
+				userId: ctx.session.user.id,
+			});
 
 			return {
 				patient,
@@ -47,9 +54,12 @@ export const patientsRouter = createTRPCRouter({
 		}),
 
 	list: protectedProcedure
-		.input(ListPatientsUseCaseRequest)
-		.query(async ({ input }) => {
-			const patients = await listPatientsUseCase.execute(input);
+		.input(ListPatientsUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const patients = await listPatientsUseCase.execute({
+				...input,
+				userId: ctx.session.user.id,
+			});
 
 			return {
 				patients,
@@ -57,9 +67,12 @@ export const patientsRouter = createTRPCRouter({
 		}),
 
 	update: protectedProcedure
-		.input(UpdatePatientUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const patient = await updatePatientUseCase.execute(input);
+		.input(UpdatePatientUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const patient = await updatePatientUseCase.execute({
+				...input,
+				userId: ctx.session.user.id,
+			});
 
 			return {
 				patient,

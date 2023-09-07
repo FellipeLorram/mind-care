@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddPatientFormSchema, type AddPatientFormValues } from "./schema";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
 import { PersonalInformation } from "./personal-information";
 import { MedicalInformation } from "./medical-information";
 import { AppointmentInformation } from "./appointment-information";
 import { CircleDashed } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface AddPatientFormProps {
 	onSubmit: (data: AddPatientFormValues) => void;
@@ -20,23 +21,22 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 	const form = useForm<AddPatientFormValues>({
 		resolver: zodResolver(AddPatientFormSchema),
 		defaultValues: {
-			name: "",
-			age: 0,
-			email: "",
-			gender: "",
-			phone: [] as string[],
-			address: "",
-			nationality: "",
+			name: '',
+			address: '',
+			allergies: '',
+			appointmentFrom: '',
+			appointmentTo: '',
+			chronicDiseases: '',
+			observations: '',
+			email: '',
+			gender: '',
+			medicalHistory: '',
+			medications: '',
+			modality: 'inPerson',
+			nationality: '',
+			occupation: '',
 			birthDate: new Date(),
-			appointmentFrom: "",
-			appointmentTo: "",
-			observations: "",
-			medicalHistory: "",
-			medications: "",
-			allergies: "",
-			chronicDiseases: "",
-			modality: "",
-			occupation: "",
+			phones: [{ number: '', refersTo: '' }],
 			appointmentDay: "monday",
 		},
 	});
@@ -45,13 +45,16 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="space-y-6"
+				className="space-y-6 px-6 md:px-0"
 			>
 				<PersonalInformation form={form} />
 				<MedicalInformation form={form} />
 				<AppointmentInformation form={form} />
 
-				{/* <FormField
+				<div className='w-full text-center pt-4'>
+					<p>Additional Information</p>
+				</div>
+				<FormField
 					control={form.control}
 					name="observations"
 					render={({ field }) => (
@@ -68,16 +71,18 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 							<FormMessage />
 						</FormItem>
 					)}
-				/> */}
+				/>
 
-				<Button
-					type="submit"
-					className='w-full'
-				>
-					{loading ? (
-						<CircleDashed className="animate-spin h-5 w-5" />
-					) : "Add"}
-				</Button>
+				<div className="w-full pt-10">
+					<Button
+						type="submit"
+						className='w-full'
+					>
+						{loading ? (
+							<CircleDashed className="animate-spin h-5 w-5" />
+						) : "Add"}
+					</Button>
+				</div>
 			</form>
 		</Form>
 

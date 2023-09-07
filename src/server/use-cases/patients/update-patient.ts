@@ -21,6 +21,10 @@ export const UpdatePatientUseCaseRequest = z.object({
 	observation: z.string().optional(),
 	modality: z.string().optional(),
 	nationality: z.string().optional(),
+	phones: z.array(z.object({
+		number: z.string(),
+		refersTo: z.string(),
+	})).optional(),
 });
 
 type UpdatePatientUseCaseRequest = z.infer<typeof UpdatePatientUseCaseRequest>;
@@ -49,7 +53,21 @@ export class UpdatePatientUseCase {
 
 		const patient = await this.patientRepository.update(data.patientId, {
 			...data,
-		});
+			phones: {
+				upsert: data.phones?.map(phone => ({
+					where: {
+						number: phone.number,
+					},
+					create: {
+						number: phone.number,
+						refers_to: phone.refersTo,
+					},
+					update: {
+						refers_to: phone.refersTo,
+					},
+				})),
+			},
+		})
 
 		return {
 			patient

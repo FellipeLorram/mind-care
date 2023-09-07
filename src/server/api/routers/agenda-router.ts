@@ -6,12 +6,12 @@ const getDayAgenda = MakeGetDayAgendaUseCase();
 
 export const agendaRouter = createTRPCRouter({
 	getDaysAgenda: protectedProcedure
-		.input(GetDayAgendaRequest)
-		.query(async ({ input }) => {
-			const { agenda } = await getDayAgenda.execute(input);
-
-			console.log('new request');
-			console.log(input.day);
+		.input(GetDayAgendaRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const { agenda } = await getDayAgenda.execute({
+				...input,
+				userId: ctx.session.user.id,
+			});
 
 			return {
 				agenda,
