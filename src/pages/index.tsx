@@ -1,9 +1,18 @@
-import { AuthForm } from "@/components/forms/authForm";
+import { Patients } from '@/components/layout/dashboard/patients'
+import { Todaysappointments } from '@/components/layout/dashboard/todays-appointments'
+import { WeekAppointments } from '@/components/layout/dashboard/week-appointments'
+import { Layout } from '@/components/layout/layout'
 
 export default function Page() {
   return (
-    <div className="min-h-screen flex items-center">
-      <AuthForm />
-    </div>
+    <Layout>
+      <div className='w-full flex flex-col gap-4'>
+        <div className='w-full flex flex-col md:flex-row justify-center items-center gap-4'>
+          <Patients />
+          <Todaysappointments />
+        </div>
+        <WeekAppointments />
+      </div>
+    </Layout>
   )
 }
