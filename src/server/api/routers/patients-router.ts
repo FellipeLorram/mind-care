@@ -48,9 +48,7 @@ export const patientsRouter = createTRPCRouter({
 				userId: ctx.session.user.id,
 			});
 
-			return {
-				patient,
-			};
+			return patient
 		}),
 
 	list: protectedProcedure
@@ -61,9 +59,7 @@ export const patientsRouter = createTRPCRouter({
 				userId: ctx.session.user.id,
 			});
 
-			return {
-				patients,
-			};
+			return patients
 		}),
 
 	update: protectedProcedure
@@ -74,8 +70,6 @@ export const patientsRouter = createTRPCRouter({
 				userId: ctx.session.user.id,
 			});
 
-			return {
-				patient,
-			};
+			return patient
 		}),
 });

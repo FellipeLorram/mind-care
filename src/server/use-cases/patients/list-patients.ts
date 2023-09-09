@@ -8,7 +8,7 @@ import { z } from 'zod';
 export const ListPatientsUseCaseRequest = z.object({
 	userId: z.string(),
 	page: z.number(),
-	query: z.string(),
+	query: z.string().optional(),
 });
 
 type ListPatientsUseCaseRequest = z.infer<typeof ListPatientsUseCaseRequest>;

@@ -46,6 +46,7 @@ export class PrismaPatientRepository implements PatientRepository {
 			where: {
 				user_id: userId,
 				OR: [
+					{ user_id: userId },
 					{
 						name: {
 							contains: query,
