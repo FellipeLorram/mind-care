@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const AddPatientFormSchema = z.object({
 	name: z.string().nonempty({ message: 'Name is required' }),
-	age: z.string().transform(v => Number(v)),
+	age: z.string().or(z.number()).transform(v => Number(v)),
 	email: z.string().email().optional().default('no-provided@email.com'),
 	gender: z.string().optional(),
 	phones: z.array(z.object({
@@ -24,12 +24,12 @@ export const AddPatientFormSchema = z.object({
 	chronicDiseases: z.string().optional(),
 	modality: z.enum(['inPerson', 'online', 'hibrid'])
 }).refine(({ appointmentFrom, appointmentTo }) => {
-    const from = new Date(`2000-01-01T${appointmentFrom}`);
-    const to = new Date(`2000-01-01T${appointmentTo}`);
-    return from < to;
+	const from = new Date(`2000-01-01T${appointmentFrom}`);
+	const to = new Date(`2000-01-01T${appointmentTo}`);
+	return from < to;
 }, {
-    message: 'Appointment to must be after appointment from',
-    path: ['appointmentTo'],
+	message: 'Appointment to must be after appointment from',
+	path: ['appointmentTo'],
 }).transform(data => ({
 	...data,
 	birthDate: new Date(data.birthDate),

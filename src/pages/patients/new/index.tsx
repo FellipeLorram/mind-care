@@ -10,12 +10,11 @@ export default function Page() {
 		isLoading,
 		mutate,
 		data,
-		error,
 	} = api.patients.create.useMutation();
 	const { toast } = useToast();
 	const { push } = useRouter();
 
-	function onSubmit(values: AddPatientFormValues) {
+	async function onSubmit(values: AddPatientFormValues) {
 		try {
 			mutate({
 				...values,
@@ -29,6 +28,7 @@ export default function Page() {
 				description: 'Patient created successfully',
 			});
 
+			await push(`/patients/${data?.patient?.id}`);
 		} catch (error) {
 			console.error(error)
 			toast({

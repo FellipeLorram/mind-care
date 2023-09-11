@@ -4,7 +4,6 @@ import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InvalidUserError } from '../errors/invalid-user-error';
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { z } from 'zod';
-import { randomUUID } from 'crypto';
 
 export const UpdatePatientUseCaseRequest = z.object({
 	userId: z.string(),

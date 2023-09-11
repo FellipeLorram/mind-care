@@ -45,11 +45,13 @@ export function Todaysappointments() {
 					</div>
 				</div>
 			) : (
-				<div className='w-full flex flex-col items-center justify-center flex-1'>
+				<div className='w-full flex flex-col flex-1'>
 					{agenda.length === 0 ? (
-						<p className="text-gray-500 text-center self-center">
-							{'It seems like you have a free day! :)'}
-						</p>
+						<div className="flex flex-1 items-center justify-center">
+							<p className="text-gray-500 text-center self-center">
+								{'It seems like you have a free day! :)'}
+							</p>
+						</div>
 					) : (
 						<>
 							{agenda.map(({ patient, appointment }) => (

@@ -5,6 +5,7 @@ import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { z } from 'zod';
 import { InavalidAppointmentDurationError } from '../errors/invalid-appointment-duration-error';
 import { InavalidAppointmentDayError } from '../errors/invalid-appointment-day-error';
+import { v4 } from 'uuid';
 
 export const CreatePatientUseCaseRequest = z.object({
 	name: z.string(),
@@ -23,7 +24,6 @@ export const CreatePatientUseCaseRequest = z.object({
 	phones: z.array(z.object({
 		number: z.string(),
 		refersTo: z.string(),
-		id: z.string(),
 	})).optional(),
 });
 
@@ -82,6 +82,7 @@ export class CreatePatientUseCase {
 				create: data.phones?.map(phone => ({
 					number: phone.number,
 					refers_to: phone.refersTo,
+					id: v4(),
 				}))
 			},
 		});

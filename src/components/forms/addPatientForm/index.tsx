@@ -35,9 +35,10 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 			modality: 'inPerson',
 			nationality: '',
 			occupation: '',
-			birthDate: new Date(),
 			phones: [{ number: '', refersTo: '' }],
 			appointmentDay: "monday",
+			age: 0,
+			birthDate: new Date(),
 		},
 	});
 

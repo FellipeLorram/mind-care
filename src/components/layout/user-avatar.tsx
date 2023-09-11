@@ -14,7 +14,7 @@ export function UserAvatar() {
 	const handleSignOut = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		event.preventDefault()
 		await signOut({
-			callbackUrl: `${window.location.origin}/sign-in}`,
+			callbackUrl: `${window.location.origin}/sign-in`,
 			redirect: true
 		})
 	}
