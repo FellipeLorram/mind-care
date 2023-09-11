@@ -8,8 +8,7 @@ export function AuthForm() {
 
 	const handleSignIn = async () => {
 		try {
-			const res = await signIn('google', { callbackUrl: `${window.location.pathname}/dashboard` });
-			console.log(res);
+			await signIn('google', { callbackUrl: `${window.location.origin}/` });
 		} catch (error) {
 			console.log(error);
 			toast({
