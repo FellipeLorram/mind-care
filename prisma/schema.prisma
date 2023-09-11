@@ -60,7 +60,7 @@ model Patient {
   name        String
   address     String?
   age         Int
-  email       String?   @unique
+  email       String?   
   gender      String?
   observation String?
   nationality String?
@@ -85,7 +85,8 @@ model Patient {
 }
 
 model Phone {
-  number     String  @unique
+  id         String  @id @default(uuid())
+  number     String 
   refers_to  String
   patient    Patient @relation(fields: [patient_id], references: [id])
   patient_id String

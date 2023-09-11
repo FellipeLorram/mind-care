@@ -3,7 +3,7 @@ import { z } from "zod";
 import { type UserRepository } from "@/server/repositories/user-repository";
 import { type PatientRepository } from "@/server/repositories/patient-repository";
 
-import { ResourceNotFoundError } from "../../errors/resource-not-found-error";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 import { daysOfWeek } from "@/lib/days-of-week";
 
 export const GetDayAgendaRequest = z.object({

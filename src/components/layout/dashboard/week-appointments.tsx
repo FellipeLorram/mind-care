@@ -1,9 +1,8 @@
 import { Calendar } from 'lucide-react'
-import React from 'react'
 
 export function WeekAppointments() {
 	return (
-		<div className='flex flex-col mx-auto w-full border-2 border-gray-300 p-4 rounded-xl gap-4 h-72'>
+		<div className='flex flex-col mx-auto w-full border border-gray-300 shadow-4xl p-4 rounded-xl gap-4 h-80'>
 			<div className='w-full flex flex-row justify-between items-center'>
 				<h1 className="font-medium text-gray-700">
 					Week Appointments

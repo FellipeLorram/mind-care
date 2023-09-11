@@ -3,7 +3,7 @@ import { GetDayAgendaUseCase } from './get-day-agenda';
 import { testAssets } from '@/lib/test-assets';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { InMemoryPatientsRepository } from '@/server/repositories/in-memory/in-memory-patients-repository';
-import { ResourceNotFoundError } from '../../errors/resource-not-found-error';
+import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 
 let sut: GetDayAgendaUseCase;
 let userId: string;

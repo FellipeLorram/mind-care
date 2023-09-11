@@ -30,10 +30,11 @@ describe('Delete Patient Use Case', () => {
 			name: 'John Doe',
 			email: 'johndoe@example.com',
 			age: 20,
-			appointment_duration: 30,
 			address: 'Rua 1',
-			appointment_time: new Date(),
 			modality: 'Presencial',
+			appointment_day: 'monday',
+			appointment_from: '08:00',
+			appointment_to: '09:00',
 			user_id: user.id,
 		});
 

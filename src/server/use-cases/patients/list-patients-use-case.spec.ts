@@ -29,9 +29,10 @@ describe('List Patients Use Case', () => {
 				user_id: userId,
 				age: 10,
 				name: 'john doe',
-				appointment_duration: 30,
-				appointment_time: new Date(),
-				modality: 'Presencial'
+				modality: 'Presencial',
+				appointment_day: 'monday',
+				appointment_from: '08:00',
+				appointment_to: '09:00',
 			});
 		}
 	});

@@ -2,7 +2,7 @@ import { UserAvatar } from "./user-avatar";
 import Link from "next/link";
 import { LogoBrain } from "@/assets/logo-brain";
 import { buttonVariants } from "../ui/button";
-import { Plus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 
 export function Topbar() {
 	return (
@@ -16,11 +16,11 @@ export function Topbar() {
 
 			<Link
 				className={buttonVariants({
-					variant: 'secondary',
+					variant: 'default',
 					className: 'flex items-center border border-gray-300',
 				})}
 				href='/patients/new'>
-				<Plus
+				<UserPlus
 					className='w-4 h-4 mr-2'
 				/>
 				<p>

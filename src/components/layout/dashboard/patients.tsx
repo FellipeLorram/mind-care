@@ -9,7 +9,7 @@ export function Patients() {
 	});
 
 	return (
-		<div className='relative flex flex-col mx-auto w-11/12 max-w-xl border-2 border-gray-300 p-4 rounded-xl gap-4 h-72'>
+		<div className='relative flex flex-col mx-auto w-11/12 max-w-xl border border-gray-300 p-4 rounded-xl gap-4 h-72 shadow-4xl'>
 			<div className='w-full flex flex-row justify-between items-center'>
 				<Link
 					href="/patients"

@@ -30,11 +30,12 @@ describe('Update Patient Use Case', () => {
 			name: 'John Doe',
 			email: 'johndoe@example.com',
 			age: 20,
-			appointment_duration: 30,
 			address: 'Rua 1',
-			appointment_time: new Date(),
 			modality: 'Presencial',
 			user_id: user.id,
+			appointment_day: 'monday',
+			appointment_from: '08:00',
+			appointment_to: '09:00',
 		});
 	});
 
@@ -73,8 +74,4 @@ describe('Update Patient Use Case', () => {
 			address: 'Rua 2',
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
-
-	// it('should not be able update patient if user is not authenticated', () => {
-	// 	expect(1).toBe(1);
-	// });
 });

@@ -23,6 +23,7 @@ export const CreatePatientUseCaseRequest = z.object({
 	phones: z.array(z.object({
 		number: z.string(),
 		refersTo: z.string(),
+		id: z.string(),
 	})).optional(),
 });
 

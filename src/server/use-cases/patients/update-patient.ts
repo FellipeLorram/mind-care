@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InvalidUserError } from '../errors/invalid-user-error';
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { z } from 'zod';
+import { randomUUID } from 'crypto';
 
 export const UpdatePatientUseCaseRequest = z.object({
 	userId: z.string(),
@@ -24,6 +25,7 @@ export const UpdatePatientUseCaseRequest = z.object({
 	phones: z.array(z.object({
 		number: z.string(),
 		refersTo: z.string(),
+		id: z.string(),
 	})).optional(),
 });
 
@@ -56,6 +58,7 @@ export class UpdatePatientUseCase {
 			phones: {
 				upsert: data.phones?.map(phone => ({
 					where: {
+						id: phone.id,
 						number: phone.number,
 					},
 					create: {

@@ -6,11 +6,16 @@ import { motion } from 'framer-motion'
 import { useRouter } from 'next/router';
 
 export default function Page() {
-	const { isLoading, mutate, data } = api.patients.create.useMutation();
+	const {
+		isLoading,
+		mutate,
+		data,
+		error,
+	} = api.patients.create.useMutation();
 	const { toast } = useToast();
 	const { push } = useRouter();
 
-	async function onSubmit(values: AddPatientFormValues) {
+	function onSubmit(values: AddPatientFormValues) {
 		try {
 			mutate({
 				...values,
@@ -24,7 +29,6 @@ export default function Page() {
 				description: 'Patient created successfully',
 			});
 
-			await push(`/patients/${data?.patient?.id}`);
 		} catch (error) {
 			console.error(error)
 			toast({

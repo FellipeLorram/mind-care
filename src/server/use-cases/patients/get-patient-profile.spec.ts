@@ -36,8 +36,9 @@ describe('Get Patient Profile Use Case', () => {
 			email: 'any_email@email.com',
 			gender: 'male',
 			nationality: 'any_nationality',
-			appointment_duration: 10,
-			appointment_time: new Date(),
+			appointment_day: 'monday',
+			appointment_from: '10:00',
+			appointment_to: '10:45',
 			user_id: userId,
 		});
 

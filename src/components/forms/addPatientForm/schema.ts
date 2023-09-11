@@ -30,15 +30,6 @@ export const AddPatientFormSchema = z.object({
 }, {
     message: 'Appointment to must be after appointment from',
     path: ['appointmentTo'],
-}).refine(({ appointmentFrom, appointmentTo }) => {
-    const from = new Date(`2000-01-01T${appointmentFrom}`);
-    const to = new Date(`2000-01-01T${appointmentTo}`);
-    const minTime = new Date(`2000-01-01T08:00`);
-    const maxTime = new Date(`2000-01-01T20:00`);
-    return from >= minTime && to <= maxTime;
-}, {
-    message: 'Appointment must be between 8:00 and 20:00',
-    path: ['appointmentTo'],
 }).transform(data => ({
 	...data,
 	birthDate: new Date(data.birthDate),

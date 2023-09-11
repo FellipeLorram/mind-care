@@ -1,4 +1,4 @@
-import { GetDayAgendaRequest } from "@/server/use-cases/agenda/list-day-agenda/get-day-agenda";
+import { GetDayAgendaRequest } from "@/server/use-cases/agenda/get-day-agenda";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { MakeGetDayAgendaUseCase } from "@/server/use-cases/factories/make-get-days-agenda-use-case";
 

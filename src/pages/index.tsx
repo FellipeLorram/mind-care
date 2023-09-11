@@ -6,8 +6,8 @@ import { Layout } from '@/components/layout/layout'
 export default function Page() {
   return (
     <Layout>
-      <div className='w-full flex flex-col gap-4'>
-        <div className='w-full flex flex-col md:flex-row justify-center items-center gap-4'>
+      <div className='w-full flex flex-col gap-6'>
+        <div className='w-full flex flex-col md:flex-row justify-center items-center gap-6'>
           <Patients />
           <Todaysappointments />
         </div>
