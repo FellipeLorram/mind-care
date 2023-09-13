@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { type Patient, type Prisma } from '@prisma/client';
 import { type PatientRepository } from '../patient-repository';
-import { type daysOfWeek } from '@/lib/days-of-week';
+import { type daysOfWeekType } from '@/lib/days-of-week';
 
 export class InMemoryPatientsRepository implements PatientRepository {
 	private patients: Patient[];
@@ -86,7 +86,7 @@ export class InMemoryPatientsRepository implements PatientRepository {
 		return patients.slice((page - 1) * 20, page * 20);
 	}
 
-	async listByUserIdAndAppointmentDay(userId: string, day: daysOfWeek) {
+	async listByUserIdAndAppointmentDay(userId: string, day: daysOfWeekType) {
 		const patients = this.patients.filter((patient) => patient.user_id === userId && patient.appointment_day === day);
 
 		return patients;

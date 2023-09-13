@@ -1,10 +1,10 @@
 import { api } from '@/lib/api'
-import { type daysOfWeek } from '@/lib/days-of-week'
+import { type daysOfWeekType } from '@/lib/days-of-week'
 import { CircleDashed } from 'lucide-react';
 import React from 'react'
 
 interface Props {
-	day: daysOfWeek
+	day: daysOfWeekType;
 }
 
 const days = {
@@ -27,8 +27,8 @@ export function DayAgenda({ day }: Props) {
 	const agenda = data?.agenda ?? []
 
 	return (
-		<div className='w-full flex flex-col rounded border border-gray-300'>
-			<div className="w-full text-center p-2 border-b border-gray-300">
+		<div className='w-full flex flex-col rounded border border-input'>
+			<div className="w-full text-center p-2 border-b border-input">
 				<h1 className="font-medium">{days[day]} Appointments</h1>
 			</div>
 			<div className="w-full flex flex-col items-center justify-center p-4">
@@ -37,7 +37,7 @@ export function DayAgenda({ day }: Props) {
 						{appointment.from} - {appointment.to}: {patient?.name}
 					</div>
 				)) : (
-					<div className="text-gray-400 text-center p-2">
+					<div className="text-muted-foreground text-center p-2">
 						{isLoading ? <CircleDashed className='animate-spin h-6 w-6' /> : 'No appointments yet for this day'}
 					</div>
 				)}

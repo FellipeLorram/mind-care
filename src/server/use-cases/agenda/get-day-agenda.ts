@@ -5,6 +5,7 @@ import { type PatientRepository } from "@/server/repositories/patient-repository
 
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 import { daysOfWeek } from "@/lib/days-of-week";
+import { type agenda } from "@/lib/agenda";
 
 export const GetDayAgendaRequest = z.object({
 	userId: z.string(),
@@ -13,17 +14,6 @@ export const GetDayAgendaRequest = z.object({
 
 type getDayAgendaRequest = z.infer<typeof GetDayAgendaRequest>;
 
-type agenda = {
-	patient: {
-		id: string,
-		name: string,
-	},
-	appointment: {
-		from: string,
-		to: string,
-		day: string,
-	},
-}
 
 interface GetDayAgendaResponse {
 	agenda: agenda[]

@@ -10,4 +10,4 @@ export const daysOfWeek = z.union([
 	z.literal('sunday'),
 ]);
 
-export type daysOfWeek = z.infer<typeof daysOfWeek>;
+export type daysOfWeekType = z.infer<typeof daysOfWeek>;

@@ -43,7 +43,7 @@ export default function Page() {
 			<motion.div
 				initial={{ opacity: 0, y: 50 }}
 				animate={{ opacity: 1, y: 0 }}
-				className="w-full max-w-3xl mx-auto bg-white shadow-3xl py-12 rounded-lg h-full my-2"
+				className="w-full max-w-3xl mx-auto bg-background border border-input shadow-3xl py-12 rounded-lg h-full my-2"
 			>
 				<div className='max-w-xl mx-auto'>
 					<AddPatientForm

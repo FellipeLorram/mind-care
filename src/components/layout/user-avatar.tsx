@@ -23,7 +23,10 @@ export function UserAvatar() {
 		<DropdownMenu>
 			<DropdownMenuTrigger>
 				<Avatar>
-					<AvatarImage src={session?.user?.image ?? undefined} />
+					<AvatarImage
+						className='w-10'
+						src={session?.user?.image ?? undefined}
+					/>
 					<AvatarFallback className='font-semibold text-black'>
 						{session?.user?.name?.split(' ').map((name) => name[0])}
 					</AvatarFallback>
