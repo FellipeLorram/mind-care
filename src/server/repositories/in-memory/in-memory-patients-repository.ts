@@ -83,7 +83,11 @@ export class InMemoryPatientsRepository implements PatientRepository {
 	async list(userId: string, page: number) {
 		const patients = this.patients.filter((patient) => patient.user_id === userId);
 
-		return patients.slice((page - 1) * 20, page * 20);
+
+		return {
+			patients: patients.slice((page - 1) * 20, page * 20),
+			count: patients.length,
+		}
 	}
 
 	async listByUserIdAndAppointmentDay(userId: string, day: daysOfWeekType) {

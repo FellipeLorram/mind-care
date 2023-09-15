@@ -1,6 +1,6 @@
 import { type Prisma } from '@prisma/client';
 import { type PatientRepository } from '../patient-repository';
-import { type daysOfWeek } from '@/lib/days-of-week';
+import { type daysOfWeekType } from '@/lib/days-of-week';
 import { prisma } from '@/server/db';
 
 export class PrismaPatientRepository implements PatientRepository {
@@ -46,7 +46,6 @@ export class PrismaPatientRepository implements PatientRepository {
 			where: {
 				user_id: userId,
 				OR: [
-					{ user_id: userId },
 					{
 						name: {
 							contains: query,
@@ -63,10 +62,13 @@ export class PrismaPatientRepository implements PatientRepository {
 			take: 10,
 		});
 
-		return patients;
+		return {
+			patients,
+			count: patients.length,
+		};
 	}
 
-	async listByUserIdAndAppointmentDay(userId: string, day: daysOfWeek) {
+	async listByUserIdAndAppointmentDay(userId: string, day: daysOfWeekType) {
 		const patients = await prisma.patient.findMany({
 			where: {
 				user_id: userId,

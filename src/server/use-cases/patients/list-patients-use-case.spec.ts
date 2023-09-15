@@ -38,13 +38,14 @@ describe('List Patients Use Case', () => {
 	});
 
 	it('should list all patients', async () => {
-		const { patients } = await sut.execute({
+		const { patients, count } = await sut.execute({
 			userId,
 			page: 1,
 			query: ''
 		});
 
 		expect(patients).toHaveLength(20);
+		expect(count).toBe(30);
 	});
 
 	it('should list patients with pagination', async () => {

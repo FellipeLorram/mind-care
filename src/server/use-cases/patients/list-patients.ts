@@ -15,6 +15,7 @@ type ListPatientsUseCaseRequest = z.infer<typeof ListPatientsUseCaseRequest>;
 
 interface ListPatientsUseCaseResponse {
 	patients: Patient[];
+	count: number;
 }
 
 export class ListPatientsUseCase {
@@ -33,10 +34,11 @@ export class ListPatientsUseCase {
 			throw new ResourceNotFoundError();
 		}
 
-		const patients = await this.patientRepository.list(data.userId, data.page, data.query);
+		const { patients, count } = await this.patientRepository.list(data.userId, data.page, data.query);
 
 		return {
-			patients
+			patients,
+			count,
 		};
 	}
 }
