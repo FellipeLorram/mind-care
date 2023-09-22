@@ -1,5 +1,5 @@
-import { AddPatientForm } from '@/components/forms/addPatientForm'
-import { type AddPatientFormValues } from '@/components/forms/addPatientForm/schema';
+import { AddPatientForm } from '@/components/forms/patient-form'
+import { type AddPatientFormValues } from '@/components/forms/patient-form/schema';
 import { useToast } from '@/components/ui/use-toast';
 import { api } from '@/lib/api'
 import { motion } from 'framer-motion'
@@ -39,19 +39,17 @@ export default function Page() {
 	}
 
 	return (
-		<div>
-			<motion.div
-				initial={{ opacity: 0, y: 50 }}
-				animate={{ opacity: 1, y: 0 }}
-				className="w-full max-w-3xl mx-auto bg-background border border-input shadow-3xl py-12 rounded-lg h-full my-2"
-			>
-				<div className='max-w-xl mx-auto'>
-					<AddPatientForm
-						onSubmit={onSubmit}
-						loading={isLoading}
-					/>
-				</div>
-			</motion.div>
-		</div>
+		<motion.div
+			initial={{ opacity: 0, y: 50 }}
+			animate={{ opacity: 1, y: 0 }}
+			className="w-full max-w-3xl mx-auto bg-background border border-input shadow-3xl py-12 rounded-lg h-full my-2"
+		>
+			<div className='max-w-xl mx-auto'>
+				<AddPatientForm
+					onSubmit={onSubmit}
+					loading={isLoading}
+				/>
+			</div>
+		</motion.div>
 	)
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddPatientFormSchema, type AddPatientFormValues } from "./schema";
+import { AddPatientFormSchema, PatientPersonalInfoSchemaType, type AddPatientFormValues } from "./schema";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -48,7 +48,6 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="space-y-6 px-6 md:px-0"
 			>
-				<PersonalInformation form={form} />
 				<MedicalInformation form={form} />
 				<AppointmentInformation form={form} />
 
@@ -86,6 +85,5 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 				</div>
 			</form>
 		</Form>
-
 	)
 }

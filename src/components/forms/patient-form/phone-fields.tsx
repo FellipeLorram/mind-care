@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react'
 import { type UseFormReturn } from 'react-hook-form';
-import { type AddPatientFormValues } from './schema';
+import { type PatientPersonalInfoSchemaType } from './schema';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Minus, Plus } from 'lucide-react';
 
 interface PersonalInformationProps {
-	form: UseFormReturn<AddPatientFormValues>;
+	form: UseFormReturn<PatientPersonalInfoSchemaType>;
 }
 
 export function PhoneFields({ form }: PersonalInformationProps) {

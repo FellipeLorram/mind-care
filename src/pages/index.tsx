@@ -1,4 +1,4 @@
-import { Patients } from '@/components/layout/dashboard/patients'
+import { Patients } from '@/components/layout/patients'
 import { Layout } from '@/components/layout/layout'
 
 export default function Page() {
