@@ -1,6 +1,5 @@
-import { type Patient } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
-import { type PatientRepository } from '@/server/repositories/patient-repository';
+import { type PatientWithPhones, type PatientRepository } from '@/server/repositories/patient-repository';
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { z } from 'zod';
 
@@ -12,7 +11,7 @@ export const GetPatientProfileUseCaseRequest = z.object({
 type GetPatientProfileUseCaseRequest = z.infer<typeof GetPatientProfileUseCaseRequest>;
 
 interface GetPatientProfileUseCaseResponse {
-	patient: Patient;
+	patient: PatientWithPhones 
 }
 
 export class GetPatientProfileUseCase {
@@ -33,7 +32,7 @@ export class GetPatientProfileUseCase {
 		}
 
 		return {
-			patient
+			patient,
 		};
 	}
 }

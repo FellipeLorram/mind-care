@@ -1,16 +1,16 @@
-import { type AddPatientFormValues } from './schema';
+import { type AddPatientFormValues } from '../schema';
 import { type UseFormReturn } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-interface MedicalInformationProps {
+interface Props {
 	form: UseFormReturn<AddPatientFormValues>;
 }
 
-export function MedicalInformation({ form }: MedicalInformationProps) {
+export function MedicalInformation({ form }: Props) {
 	return (
-		<div className='space-y-6'>
-			<div className='w-full text-center pt-4'>
+		<div className='space-y-6 p-6 md:p-8 border rounded-lg shadow-4xl'>
+			<div className='w-full text-center '>
 				<p>Medical Information</p>
 			</div>
 			<FormField

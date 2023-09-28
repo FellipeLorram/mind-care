@@ -17,9 +17,9 @@ export const CreatePatientUseCaseRequest = z.object({
 	nationality: z.string().optional(),
 	birthDate: z.date().optional(),
 	modality: z.string(),
-	appointment_from: z.string(),
-	appointment_to: z.string(),
-	appointment_day: z.string(),
+	appointmentFrom: z.string(),
+	appointmentTo: z.string(),
+	appointmentDay: z.string(),
 	userId: z.string(),
 	phones: z.array(z.object({
 		number: z.string(),
@@ -51,11 +51,11 @@ export class CreatePatientUseCase {
 	}
 
 	async execute(data: CreatePatientUseCaseRequest): Promise<CreatePatientUseCaseResponse> {
-		if (data.appointment_from >= data.appointment_to) {
+		if (data.appointmentFrom >= data.appointmentTo) {
 			throw new InavalidAppointmentDurationError();
 		}
 
-		if (!Object.values(AvailableWeekDay).includes(data.appointment_day as AvailableWeekDay)) {
+		if (!Object.values(AvailableWeekDay).includes(data.appointmentDay as AvailableWeekDay)) {
 			throw new InavalidAppointmentDayError();
 		}
 
@@ -69,9 +69,9 @@ export class CreatePatientUseCase {
 			address: data.address,
 			age: data.age,
 			email: data.email,
-			appointment_day: data.appointment_day,
-			appointment_from: data.appointment_from,
-			appointment_to: data.appointment_to,
+			appointment_day: data.appointmentDay,
+			appointment_from: data.appointmentFrom,
+			appointment_to: data.appointmentTo,
 			birthDate: data.birthDate,
 			modality: data.modality,
 			observation: data.observation,

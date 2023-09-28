@@ -1,55 +1,54 @@
-import { AddPatientForm } from '@/components/forms/patient-form'
+import React from 'react'
 import { type AddPatientFormValues } from '@/components/forms/patient-form/schema';
-import { useToast } from '@/components/ui/use-toast';
+import { AddPatientForm } from '@/components/forms/patient-form/add-patient-form/'
+import { Topbar } from '@/components/layout/topbar'
 import { api } from '@/lib/api'
-import { motion } from 'framer-motion'
 import { useRouter } from 'next/router';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function Page() {
 	const {
-		isLoading,
-		mutate,
 		data,
+		mutate,
+		isLoading,
+		error
 	} = api.patients.create.useMutation();
-	const { toast } = useToast();
 	const { push } = useRouter();
+	const { toast } = useToast();
 
 	async function onSubmit(values: AddPatientFormValues) {
-		try {
-			mutate({
-				...values,
-				appointment_from: values.appointmentFrom,
-				appointment_to: values.appointmentTo,
-				appointment_day: values.appointmentDay,
-			});
-
+		mutate(values);
+		if (error) {
 			toast({
-				title: 'Success',
-				description: 'Patient created successfully',
-			});
-
-			await push(`/patients/${data?.patient?.id}`);
-		} catch (error) {
-			console.error(error)
-			toast({
+				variant: 'destructive',
 				title: 'Error',
 				description: 'Something went wrong',
 			})
-		}
+			return
+		};
+
+		toast({
+			title: 'Success',
+			description: 'Patient created successfully',
+		});
+		await push(`/patients/${data?.patient.id}`)
 	}
 
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: 50 }}
-			animate={{ opacity: 1, y: 0 }}
-			className="w-full max-w-3xl mx-auto bg-background border border-input shadow-3xl py-12 rounded-lg h-full my-2"
-		>
-			<div className='max-w-xl mx-auto'>
+		<>
+			<Topbar.Wrapper className='flex-row justify-between pb-6 mb-8'>
+				<Topbar.Logo />
+				<Topbar.Actions />
+			</Topbar.Wrapper>
+			<div className='w-11/12 mx-auto max-w-3xl'>
+				<h1 className='mb-8 text-xl font-medium'>
+					New Patient
+				</h1>
 				<AddPatientForm
 					onSubmit={onSubmit}
 					loading={isLoading}
 				/>
 			</div>
-		</motion.div>
+		</>
 	)
 }

@@ -19,7 +19,6 @@ export const PersonalInfoSchema = z.object({
 
 export type PatientPersonalInfoSchemaType = z.infer<typeof PersonalInfoSchema>;
 
-
 export const PatientMedicalInfoSchema = z.object({
 	medicalHistory: z.string().optional(),
 	medications: z.string().optional(),

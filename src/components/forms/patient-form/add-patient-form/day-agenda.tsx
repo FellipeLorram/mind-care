@@ -27,7 +27,7 @@ export function DayAgenda({ day }: Props) {
 	const agenda = data?.agenda ?? []
 
 	return (
-		<div className='w-full flex flex-col rounded border border-input'>
+		<div className='w-full flex flex-col rounded border border-input min-h-[150px]'>
 			<div className="w-full text-center p-2 border-b border-input">
 				<h1 className="font-medium">{days[day]} Appointments</h1>
 			</div>

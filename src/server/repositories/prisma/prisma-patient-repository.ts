@@ -4,11 +4,14 @@ import { type daysOfWeekType } from '@/lib/days-of-week';
 import { prisma } from '@/server/db';
 
 export class PrismaPatientRepository implements PatientRepository {
-	findById(id: string) {
-		const patient = prisma.patient.findUnique({
+	async findById(id: string) {
+		const patient = await prisma.patient.findUnique({
 			where: {
 				id,
 			},
+			include: {
+				phones: true,
+			}
 		});
 
 		return patient;

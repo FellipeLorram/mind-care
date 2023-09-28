@@ -25,7 +25,7 @@ export function Patients() {
 
 				<Link
 					className={buttonVariants({ variant: 'default', className: 'w-full md:w-40' })}
-					href='/patients/new/personal-info'
+					href='/patients/new'
 				>
 					<p>
 						Add Patient
@@ -68,7 +68,7 @@ function PatientList({ searchTerm }: PatientListProps) {
 						<div className='flex-1 overflow-y-auto w-full'>
 							{patients.map((patient) => (
 								<Link
-									href={`/patients/${patient.id}/personal-information`}
+									href={`/patients/${patient.id}`}
 									key={patient.id}
 									className='flex items-center justify-center px-4 py-2 border-b border-input gap-2 first:rounded-t-md  only:rounded-b-none'
 								>

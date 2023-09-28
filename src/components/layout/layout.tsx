@@ -1,4 +1,4 @@
-import {type ReactNode} from 'react'
+import { type ReactNode} from 'react'
 import { Topbar } from './topbar'
 
 export function Layout({ children }: { children: ReactNode }) {

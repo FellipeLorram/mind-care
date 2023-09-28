@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { UseFormReturn, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddPatientFormSchema, PatientPersonalInfoSchemaType, type AddPatientFormValues } from "./schema";
+import { AddPatientFormSchema, type AddPatientFormValues } from "../schema";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
-import { PersonalInformation } from "./personal-information";
+import { CircleDashed } from "lucide-react";
 import { MedicalInformation } from "./medical-information";
 import { AppointmentInformation } from "./appointment-information";
-import { CircleDashed } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { PersonalInformation } from "./personal-information";
+import { AdditionalInformation } from "./additional-information";
 
 interface AddPatientFormProps {
 	onSubmit: (data: AddPatientFormValues) => void;
@@ -46,34 +46,14 @@ export function AddPatientForm({ onSubmit, loading }: AddPatientFormProps) {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="space-y-6 px-6 md:px-0"
+				className="space-y-6 pb-8"
 			>
+				<PersonalInformation form={form} />
 				<MedicalInformation form={form} />
 				<AppointmentInformation form={form} />
+				<AdditionalInformation form={form} />
 
-				<div className='w-full text-center pt-4'>
-					<p>Additional Information</p>
-				</div>
-				<FormField
-					control={form.control}
-					name="observations"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Observations</FormLabel>
-							<FormControl>
-								<Textarea
-									placeholder="observations"
-									className="resize-none"
-									{...field}
-								/>
-
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<div className="w-full pt-10">
+				<div className="w-full ">
 					<Button
 						type="submit"
 						className='w-full'

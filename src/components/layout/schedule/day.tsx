@@ -69,7 +69,7 @@ export function DayAgenda({ day }: Props) {
 								<Tooltip>
 									<TooltipTrigger>
 										<Link
-											href={`/patients/${patient.id}/personal-information`}
+											href={`/patients/${patient.id}`}
 										>
 											<UserSquare2
 												className='w-4'
