@@ -39,7 +39,7 @@ describe('List Patients Use Case', () => {
 
 	it('should list all patients', async () => {
 		const { patients, count } = await sut.execute({
-			userId,
+			user_id: userId,
 			page: 1,
 			query: ''
 		});
@@ -50,7 +50,7 @@ describe('List Patients Use Case', () => {
 
 	it('should list patients with pagination', async () => {
 		const { patients } = await sut.execute({
-			userId,
+			user_id: userId,
 			page: 2,
 			query: ''
 		});
@@ -60,7 +60,7 @@ describe('List Patients Use Case', () => {
 
 	it('should not be able to list patients with invalid page', async () => {
 		await expect(() => sut.execute({
-			userId,
+			user_id: userId,
 			page: 0,
 			query: ''
 		})).rejects.toBeInstanceOf(InavalidPageError);
@@ -68,7 +68,7 @@ describe('List Patients Use Case', () => {
 
 	it('should not be able to list patients with invalid user', async () => {
 		await expect(() => sut.execute({
-			userId: 'invalid-user',
+			user_id: 'invalid-user',
 			page: 1,
 			query: '',
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);

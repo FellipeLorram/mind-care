@@ -4,8 +4,6 @@ import { type PatientRepository } from '@/server/repositories/patient-repository
 import { InMemoryPatientsRepository } from '@/server/repositories/in-memory/in-memory-patients-repository';
 import { type UserRepository } from '@/server/repositories/user-repository';
 import { InMemoryUsersRepository } from '@/server/repositories/in-memory/in-memory-users-repository';
-import { InavalidAppointmentDurationError } from '../errors/invalid-appointment-duration-error';
-import { InavalidAppointmentDayError } from '../errors/invalid-appointment-day-error';
 
 let sut: CreatePatientUseCase;
 let patientRepository: PatientRepository;
@@ -31,17 +29,13 @@ describe('Patient Use Case', () => {
 		const { patient } = await sut.execute({
 			name: 'any_name',
 			age: 10,
-			modality: 'any_modality',
 			address: 'any_address',
 			observation: 'any_observation',
-			birthDate: new Date(),
+			birth_date: new Date(),
 			email: 'any_email@email.com',
 			gender: 'male',
 			nationality: 'any_nationality',
-			appointment_from: '10:00',
-			appointment_to: '10:45',
-			appointment_day: 'monday',
-			userId,
+			user_id: userId,
 		});
 
 		expect(patient).toBeTruthy();
@@ -51,55 +45,13 @@ describe('Patient Use Case', () => {
 		await expect(() => sut.execute({
 			name: 'any_name',
 			age: 10,
-			modality: 'any_modality',
 			address: 'any_address',
 			observation: 'any_observation',
-			birthDate: new Date(),
+			birth_date: new Date(),
 			email: 'any_email@email.com',
 			gender: 'male',
 			nationality: 'any_nationality',
-			appointment_from: '10:00',
-			appointment_to: '10:45',
-			appointment_day: 'monday',
-			userId: 'any_user_id'
+			user_id: 'any_user_id'
 		})).rejects.toBeInstanceOf(Error);
 	});
-
-	it('should not be able to create a patient with invalid appointment time', async () => {
-		await expect(() => sut.execute({
-			name: 'any_name',
-			age: 10,
-			modality: 'any_modality',
-			address: 'any_address',
-			observation: 'any_observation',
-			birthDate: new Date(),
-			email: 'any_email@email.com',
-			gender: 'male',
-			nationality: 'any_nationality',
-			appointment_from: '10:00',
-			appointment_to: '10:00',
-			appointment_day: 'monday',
-			userId,
-		})).rejects.toBeInstanceOf(InavalidAppointmentDurationError);
-	});
-
-	it('should not be able to create a patient with invalid appointment day', async () => {
-		await expect(() => sut.execute({
-			name: 'any_name',
-			age: 10,
-			modality: 'any_modality',
-			address: 'any_address',
-			observation: 'any_observation',
-			birthDate: new Date(),
-			email: 'any_email@email.com',
-			gender: 'male',
-			nationality: 'any_nationality',
-			appointment_from: '10:00',
-			appointment_to: '10:40',
-			appointment_day: 'invalid_day',
-			userId,
-		})).rejects.toBeInstanceOf(InavalidAppointmentDayError);
-	});			
-
-
 });

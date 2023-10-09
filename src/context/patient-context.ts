@@ -9,7 +9,7 @@ export const personalInfoAtom = atom<PatientPersonalInfoSchemaType>({
 	name: '',
 	address: '',
 	age: 0,
-	birthDate: '',
+	birth_date: '',
 	email: '',
 	phones: [],
 });
@@ -18,9 +18,9 @@ export const medicalInfoAtom = atom<PatientMedicalInfoSchemaType>({});
 
 export const appointmentInfoAtom = atom<PatientAppointmentInfoSchemaType>({
 	modality: 'online',
-	appointmentDay: 'monday',
-	appointmentFrom: '',
-	appointmentTo: '',
+	appointment_day: 'monday',
+	appointment_from: '',
+	appointment_to: '',
 });
 
 export function usePatientContext() {
@@ -45,16 +45,16 @@ export function usePatientContext() {
 			name: '',
 			address: '',
 			age: 0,
-			birthDate: '',
+			birth_date: '',
 			email: '',
 			phones: [],
 		});
 		setMedicalInfo({});
 		setAppointmentInfo({
 			modality: 'online',
-			appointmentDay: 'monday',
-			appointmentFrom: '',
-			appointmentTo: '',
+			appointment_day: 'monday',
+			appointment_from: '',
+			appointment_to: '',
 		});
 	}
 

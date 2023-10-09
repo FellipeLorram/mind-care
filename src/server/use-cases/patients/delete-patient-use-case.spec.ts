@@ -43,8 +43,8 @@ describe('Delete Patient Use Case', () => {
 
 	it('should be able to delete a patient', async () => {
 		await sut.execute({
-			userId,
-			patientId,
+			user_id: userId,
+			patient_id: patientId,
 		});
 
 		const patient = await patientRepository.findById(patientId);
@@ -55,8 +55,8 @@ describe('Delete Patient Use Case', () => {
 	it('should not be able to delete a patient with invalid id', async () => {
 		await expect(async () => {
 			await sut.execute({
-				userId,
-				patientId: 'invalid-id',
+				user_id: userId,
+				patient_id: 'invalid-id',
 			});
 		}).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
@@ -64,8 +64,8 @@ describe('Delete Patient Use Case', () => {
 	it('should not be able to delete a patient if user is not the owner', async () => {
 		await expect(async () => {
 			await sut.execute({
-				userId: 'invalid-user-id',
-				patientId,
+				user_id: 'invalid-user-id',
+				patient_id: patientId,
 			});
 		}).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});

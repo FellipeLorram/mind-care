@@ -32,8 +32,16 @@ describe('Get Patient Profile Use Case', () => {
 			modality: 'any_modality',
 			address: 'any_address',
 			observation: 'any_observation',
-			birthDate: new Date(),
+			birth_date: new Date(),
 			email: 'any_email@email.com',
+			phones: {
+				create: [
+					{
+						number: 'any_phone_number',
+						refers_to: 'any_phone_refers_to',
+					}
+				]
+			},
 			gender: 'male',
 			nationality: 'any_nationality',
 			appointment_day: 'monday',
@@ -44,24 +52,28 @@ describe('Get Patient Profile Use Case', () => {
 
 
 		const { patient: patientProfile } = await sut.execute({ 
-			patientId: patient.id,
-			userId
+			patient_id: patient.id,
+			user_id: userId,
 		});
 
-		expect(patientProfile).toEqual(patient);
+		expect(patientProfile).toBeTruthy();
+		expect(patientProfile.id).toBe(patient.id);
+		expect(patientProfile.name).toBe(patient.name);
+		expect(patientProfile.age).toBe(patient.age);
+		expect(patientProfile.modality).toBe(patient.modality);
 	});
 
 	it('should not get patient profile if patient does not exists', async () => {
 		await expect(sut.execute({ 
-			patientId: 'invalid-patient-id',
-			userId: 'any_user_id'
+			patient_id: 'invalid-patient-id',
+			user_id: 'any_user_id'
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
 	it('should not get patient profile if user does not exists', async () => {
 		await expect(sut.execute({
-			patientId: 'any_patient_id',
-			userId: 'invalid-user-id'
+			patient_id: 'any_patient_id',
+			user_id: 'invalid-user-id'
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

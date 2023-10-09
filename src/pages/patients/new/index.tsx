@@ -1,5 +1,5 @@
 import React from 'react'
-import { type AddPatientFormValues } from '@/components/forms/patient-form/schema';
+import { type PatientPersonalInfoSchemaType } from '@/components/forms/patient-form/schema';
 import { AddPatientForm } from '@/components/forms/patient-form/add-patient-form/'
 import { Topbar } from '@/components/layout/topbar'
 import { api } from '@/lib/api'
@@ -7,31 +7,30 @@ import { useRouter } from 'next/router';
 import { useToast } from '@/components/ui/use-toast';
 
 export default function Page() {
-	const {
-		data,
-		mutate,
-		isLoading,
-		error
-	} = api.patients.create.useMutation();
 	const { push } = useRouter();
 	const { toast } = useToast();
-
-	async function onSubmit(values: AddPatientFormValues) {
-		mutate(values);
-		if (error) {
+	const {
+		mutate,
+		isLoading,
+	} = api.patients.create.useMutation({
+		onSuccess: async ({ patient }) => {
 			toast({
-				variant: 'destructive',
+				title: 'Success',
+				description: 'Patient created successfully',
+			});
+			await push(`/patients/${patient.id}`);
+		},
+		onError: () => {
+			toast({
 				title: 'Error',
 				description: 'Something went wrong',
-			})
-			return
-		};
+			});
+		}
+	});
 
-		toast({
-			title: 'Success',
-			description: 'Patient created successfully',
-		});
-		await push(`/patients/${data?.patient.id}`)
+	function onSubmit(data: PatientPersonalInfoSchemaType) {
+		const { phones, ...values } = data;
+		mutate({ ...values, birth_date: new Date(values.birth_date) });
 	}
 
 	return (
@@ -47,6 +46,7 @@ export default function Page() {
 				<AddPatientForm
 					onSubmit={onSubmit}
 					loading={isLoading}
+					
 				/>
 			</div>
 		</>

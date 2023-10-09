@@ -60,17 +60,23 @@ model Patient {
   name        String
   address     String?
   age         Int
-  email       String?   
+  email       String?
   gender      String?
   observation String?
   nationality String?
-  birthDate   DateTime?
+  birth_date   DateTime?
+  occupation  String?
   phones      Phone[]
 
-  modality         String
-  appointment_from String
-  appointment_to   String
-  appointment_day  String
+  medical_history  String?
+  medications      String?
+  allergies        String?
+  chronic_diseases String?
+
+  modality         String?
+  appointment_from String?
+  appointment_to   String?
+  appointment_day  String?
 
   customFields CustomField[]
   appointments Appointment[]
@@ -86,7 +92,7 @@ model Patient {
 
 model Phone {
   id         String  @id @default(uuid())
-  number     String 
+  number     String
   refers_to  String
   patient    Patient @relation(fields: [patient_id], references: [id])
   patient_id String

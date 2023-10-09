@@ -5,8 +5,8 @@ import { type UserRepository } from '@/server/repositories/user-repository';
 import { z } from 'zod';
 
 export const DeletePatientUseCaseRequest = z.object({
-	userId: z.string(),
-	patientId: z.string(),
+	user_id: z.string(),
+	patient_id: z.string(),
 });
 
 type DeletePatientUseCaseRequest = z.infer<typeof DeletePatientUseCaseRequest>;
@@ -17,18 +17,18 @@ export class DeletePatientUseCase {
 		private userRepository: UserRepository
 	) { }
 
-	async execute({ userId, patientId }: DeletePatientUseCaseRequest): Promise<void> {
-		const patientExists = await this.patientRepository.findById(patientId);
-		const userExists = await this.userRepository.findById(userId);
+	async execute({ user_id, patient_id }: DeletePatientUseCaseRequest): Promise<void> {
+		const patientExists = await this.patientRepository.findById(patient_id);
+		const userExists = await this.userRepository.findById(user_id);
 
 		if (!patientExists || !userExists) {
 			throw new ResourceNotFoundError();
 		}
 
-		if (patientExists.user_id !== userId) {
+		if (patientExists.user_id !== user_id) {
 			throw new InvalidUserError();
 		}
 
-		await this.patientRepository.delete(patientId);
+		await this.patientRepository.delete(patient_id);
 	}
 }

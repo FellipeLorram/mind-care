@@ -6,8 +6,8 @@ import { type UserRepository } from '@/server/repositories/user-repository';
 import { z } from 'zod';
 
 export const UpdatePatientUseCaseRequest = z.object({
-	userId: z.string(),
-	patientId: z.string(),
+	user_id: z.string(),
+	patient_id: z.string(),
 	name: z.string().optional(),
 	address: z.string().optional(),
 	age: z.number().optional(),
@@ -16,11 +16,16 @@ export const UpdatePatientUseCaseRequest = z.object({
 	appointment_to: z.string().optional(),
 	appointment_day: z.string().optional(),
 	appointment_time: z.string().optional(),
-	birthDate: z.string().optional(),
+	birth_date: z.string().optional(),
 	gender: z.string().optional(),
 	observation: z.string().optional(),
 	modality: z.string().optional(),
 	nationality: z.string().optional(),
+	occupation: z.string().optional(),
+	allergies: z.string().optional(),
+	medications: z.string().optional(),
+	chronicDiseases: z.string().optional(),
+	medicalHistory: z.string().optional(),
 	phones: z.array(z.object({
 		number: z.string(),
 		refersTo: z.string(),
@@ -41,19 +46,39 @@ export class UpdatePatientUseCase {
 	) { }
 
 	async execute(data: UpdatePatientUseCaseRequest): Promise<UpdatePatientUseCaseResponse> {
-		const patientExists = await this.patientRepository.findById(data.patientId);
-		const userExists = await this.userRepository.findById(data.userId);
+		const { patient_id, user_id, ...updatedData } = data;
+
+		const patientExists = await this.patientRepository.findById(patient_id);
+		const userExists = await this.userRepository.findById(user_id);
 
 		if (!patientExists || !userExists) {
 			throw new ResourceNotFoundError();
 		}
 
-		if (patientExists.user_id !== data.userId) {
+		if (patientExists.user_id !== user_id) {
 			throw new InvalidUserError();
 		}
 
-		const patient = await this.patientRepository.update(data.patientId, {
-			...data,
+		const patient = await this.patientRepository.update(patient_id, {
+			name: updatedData.name,
+			address: updatedData.address,
+			age: updatedData.age,
+			email: updatedData.email,
+			appointment_from: updatedData.appointment_from,
+			appointment_to: updatedData.appointment_to,
+			appointment_day: updatedData.appointment_day,
+			allergies: updatedData.allergies,
+			medications: updatedData.medications,
+			gender: updatedData.gender,
+			observation: updatedData.observation,
+			modality: updatedData.modality,
+			occupation: updatedData.occupation,
+			nationality: updatedData.nationality,
+			
+			chronic_diseases: updatedData.chronicDiseases,
+			medical_history: updatedData.medicalHistory,
+			birth_date: updatedData.birth_date ? new Date(updatedData.birth_date) : undefined,
+			user_id: data.user_id,
 			phones: {
 				upsert: data.phones?.map(phone => ({
 					where: {

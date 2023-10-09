@@ -16,7 +16,7 @@ const deleteDetachedNoteUseCase = MakeDeleteDetachedNoteUseCase();
 const listDetachedNotesUseCase = MakeListDetachedNotesUseCase();
 const getDetachedNotesUseCase = MakeGetDetachedNotesUseCase();
 
-export const appointmentsNotesRouter = createTRPCRouter({
+export const detachedNotesRouter = createTRPCRouter({
 	create: protectedProcedure
 		.input(CreateDetachedNoteUseCaseRequest)
 		.mutation(async ({ input }) => {

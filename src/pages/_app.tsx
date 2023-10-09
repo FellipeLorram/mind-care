@@ -1,10 +1,13 @@
 import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { api } from "@/lib/api";
+import { SessionProvider } from "next-auth/react";
 import { Montserrat } from 'next/font/google'
-import "@/styles/globals.css";
+
+import { api } from "@/lib/api";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+
+import "@/styles/globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const montserrat = Montserrat({
   subsets: ['latin'],
@@ -16,13 +19,24 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <main className={`${montserrat.variable} font-sans bg-background`}>
-          <Component {...pageProps} />
-        </main>
-      </ThemeProvider>
-    </SessionProvider>
+    <>
+      <style jsx global>
+          {`
+            :root {
+              --font-montserrat: ${montserrat.variable}
+            }
+          
+          `}
+      </style>
+      <SessionProvider session={session}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <main className={`${montserrat.variable} font-sans bg-background`}>
+            <Toaster />
+            <Component {...pageProps} />
+          </main>
+        </ThemeProvider>
+      </SessionProvider>
+    </>
   );
 };
 

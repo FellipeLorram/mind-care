@@ -31,7 +31,7 @@ export function DayAgenda({ day }: Props) {
 			<div className="w-full text-center p-2 border-b border-input">
 				<h1 className="font-medium">{days[day]} Appointments</h1>
 			</div>
-			<div className="w-full flex flex-col items-center justify-center p-4">
+			<div className="w-full flex flex-col items-center justify-center p-4 space-y-2">
 				{agenda.length > 0 ? agenda.map(({ patient, appointment }) => (
 					<div className='w-full text-left text-sm' key={patient.id}>
 						{appointment.from} - {appointment.to}: {patient?.name}

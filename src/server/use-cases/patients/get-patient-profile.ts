@@ -4,8 +4,8 @@ import { type UserRepository } from '@/server/repositories/user-repository';
 import { z } from 'zod';
 
 export const GetPatientProfileUseCaseRequest = z.object({
-	patientId: z.string(),
-	userId: z.string(),
+	patient_id: z.string(),
+	user_id: z.string(),
 });
 
 type GetPatientProfileUseCaseRequest = z.infer<typeof GetPatientProfileUseCaseRequest>;
@@ -20,9 +20,9 @@ export class GetPatientProfileUseCase {
 		private userRepository: UserRepository
 	) { }
 
-	async execute({ patientId, userId }: GetPatientProfileUseCaseRequest): Promise<GetPatientProfileUseCaseResponse> {
-		const userExists = await this.userRepository.findById(userId);
-		const patient = await this.patientRepository.findById(patientId);
+	async execute({ patient_id, user_id }: GetPatientProfileUseCaseRequest): Promise<GetPatientProfileUseCaseResponse> {
+		const userExists = await this.userRepository.findById(user_id);
+		const patient = await this.patientRepository.findById(patient_id);
 
 		if (
 			!patient

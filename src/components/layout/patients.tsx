@@ -75,8 +75,14 @@ function PatientList({ searchTerm }: PatientListProps) {
 									<div className='flex-1'>
 										<p className='text-muted-foreground'>{patient.name}</p>
 									</div>
-									<p className='text-muted-foreground'>{patient.appointment_day}</p>
-									<p className='text-muted-foreground hidden sm:block'>{patient.appointment_from} - {patient.appointment_to}</p>
+									{patient.appointment_day ? (
+										<>
+											<p className='text-muted-foreground'>{patient.appointment_day}</p>
+											<p className='text-muted-foreground hidden sm:block'>{patient.appointment_from} - {patient.appointment_to}</p>
+										</>
+									) : <p className='text-muted-foreground'>
+										No schedule time
+									</p>}
 								</Link>
 							))}
 						</div>

@@ -21,53 +21,53 @@ const updatePatientUseCase = MakeUpdatePatientUseCase();
 
 export const patientsRouter = createTRPCRouter({
 	create: protectedProcedure
-		.input(CreatePatientUseCaseRequest.omit({ userId: true }))
+		.input(CreatePatientUseCaseRequest.omit({ user_id: true }))
 		.mutation(async ({ input, ctx }) => {
 			const patient = await createPatientUseCase.execute({
 				...input,
-				userId: ctx.session.user.id,
+				user_id: ctx.session.user.id,
 			});
 
 			return patient
 		}),
 
 	delete: protectedProcedure
-		.input(DeletePatientUseCaseRequest.omit({ userId: true }))
+		.input(DeletePatientUseCaseRequest.omit({ user_id: true }))
 		.mutation(async ({ input, ctx }) => {
 			await deletePatientUseCase.execute({
 				...input,
-				userId: ctx.session.user.id,
+				user_id: ctx.session.user.id,
 			});
 		}),
 
 	getProfile: protectedProcedure
-		.input(GetPatientProfileUseCaseRequest.omit({ userId: true }))
+		.input(GetPatientProfileUseCaseRequest.omit({ user_id: true }))
 		.query(async ({ input, ctx }) => {
 			const patient = await getPatientProfileUseCase.execute({
 				...input,
-				userId: ctx.session.user.id,
+				user_id: ctx.session.user.id,
 			});
 
 			return patient
 		}),
 
 	list: protectedProcedure
-		.input(ListPatientsUseCaseRequest.omit({ userId: true }))
+		.input(ListPatientsUseCaseRequest.omit({ user_id: true }))
 		.query(async ({ input, ctx }) => {
 			const patients = await listPatientsUseCase.execute({
 				...input,
-				userId: ctx.session.user.id,
+				user_id: ctx.session.user.id,
 			});
 
 			return patients
 		}),
 
 	update: protectedProcedure
-		.input(UpdatePatientUseCaseRequest.omit({ userId: true }))
+		.input(UpdatePatientUseCaseRequest.omit({ user_id: true }))
 		.mutation(async ({ input, ctx }) => {
 			const patient = await updatePatientUseCase.execute({
 				...input,
-				userId: ctx.session.user.id,
+				user_id: ctx.session.user.id,
 			});
 
 			return patient

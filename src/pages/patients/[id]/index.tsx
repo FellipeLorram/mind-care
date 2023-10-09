@@ -1,59 +1,64 @@
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 
-import { type ComponentNames, ComponentTree } from '@/components/layout/single-patient-page/component-tree';
+import { type daysOfWeekType } from '@/lib/days-of-week';
 import { Topbar } from '@/components/layout/topbar'
-import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
 import { usePatientContext } from '@/context/patient-context';
-
-type NavigationLabel = {
-	label: string
-	value: ComponentNames
-}
-
-const navigationLabels: NavigationLabel[] = [
-	{ label: 'Personal Information', value: 'personal-information' },
-	{ label: 'Medical Information', value: 'medical-information' },
-	{ label: 'Appointment Information', value: 'appointment-information' },
-	{ label: 'Notes', value: 'notes' },
-];
+import { Button, buttonVariants } from '@/components/ui/button';
+import Link from 'next/link';
+import ScheduleTime from '@/components/layout/patient-page/schedule-time';
+import { Notes } from '@/components/layout/patient-page/notes';
 
 export default function Page() {
-	const [selectedLabel, setSelectedLabel] = useState<ComponentNames>('personal-information');
 	const { id } = useRouter().query;
-	const { data } = api.patients.getProfile.useQuery({
-		patientId: id as string,
-	})
-
 	const {
+		updateMedicalInfo,
+		updateAppointmentInfo,
 		updatePersonalInfo,
 	} = usePatientContext();
 
-	const patient = data?.patient;
+	const { data } = api.patients.getProfile.useQuery({
+		patient_id: id as string ?? '1',
+	}, {
+		onSuccess: (data) => {
+			const { patient } = data;
+			if (patient) {
+				updatePersonalInfo({
+					name: patient.name,
+					age: patient.age,
+					email: patient.email ?? '',
+					gender: patient.gender ?? '',
+					phones: patient.phones.map(phone => {
+						return {
+							number: phone.number,
+							refersTo: phone.refers_to,
+						}
+					}),
+					birth_date: patient.birth_date?.toISOString().split('T')[0] ?? '',
+					address: patient.address ?? '',
+					observations: patient.observation ?? '',
+					nationality: patient.nationality ?? '',
+					occupation: patient.occupation ?? '',
+				});
 
-	useEffect(() => {
-		if (patient) {
-			updatePersonalInfo({
-				name: patient.name,
-				age: patient.age,
-				email: patient.email ?? '',
-				gender: patient.gender ?? '',
-				phones: patient.phones.map(phone => {
-					return {
-						number: phone.number,
-						refersTo: phone.refers_to,
-					}
-				}),
-				birthDate: patient.birthDate?.toString() ?? '',
-			});
+				updateMedicalInfo({
+					allergies: patient.allergies ?? '',
+					chronicDiseases: patient.chronic_diseases ?? '',
+					medications: patient.medications ?? '',
+					medicalHistory: patient.medical_history ?? '',
+				});
 
-			// updateMedicalInfo(data);
-			// updateAppointmentInfo(data);
+				updateAppointmentInfo({
+					appointment_day: patient.appointment_day as daysOfWeekType,
+					appointment_from: patient.appointment_from ?? '',
+					appointment_to: patient.appointment_to ?? '',
+					modality: patient.modality as "inPerson" | "online" | "hibrid",
+				});
+			}
 		}
+	});
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [patient]);
+	const patient = data?.patient;
 
 	return (
 		<>
@@ -63,22 +68,29 @@ export default function Page() {
 					<Topbar.Actions />
 				</div>
 			</Topbar.Wrapper>
-			<div className='w-11/12 py-12 p-8 mx-auto flex flex-col items-center md:flex-row md:items-start justify-start gap-4'>
-				<div className='hidden md:flex flex-col items-start justify-center gap-2 w-1/5'>
-					{navigationLabels.map(({ label, value }) => (
-						<Button
-							onClick={() => setSelectedLabel(value)}
-							variant='ghost'
-							className={`${value === selectedLabel ? 'font-semibold' : 'text-muted-foreground'} hover:bg-transparent`}
-							key={label}
-						>
-							{label}
+			<div className='w-11/12 max-w-6xl mx-auto'>
+				<div className='w-full flex md:items-center gap-4 items-start justify-between flex-col md:flex-row my-10'>
+					<h1 className='text-2xl font-medium'>
+						{patient?.name}
+					</h1>
+					<div>
+						<Button variant='secondary' className='mr-4'>
+							Download
 						</Button>
-					))}
+						<Link href={`/appointments/new/${patient?.id}`} className={buttonVariants()}>
+							Start appointment
+						</Link>
+					</div>
 				</div>
 
-				<ComponentTree component={selectedLabel} />
+				<ScheduleTime />
+				<h1 className='text-xl font-medium mt-14 mb-4'>
+					Notes
+				</h1>
+
+				<Notes />
 			</div>
+
 		</>
 	)
 }

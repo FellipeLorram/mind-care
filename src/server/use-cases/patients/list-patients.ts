@@ -6,7 +6,7 @@ import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { z } from 'zod';
 
 export const ListPatientsUseCaseRequest = z.object({
-	userId: z.string(),
+	user_id: z.string(),
 	page: z.number(),
 	query: z.string().optional(),
 });
@@ -28,13 +28,13 @@ export class ListPatientsUseCase {
 		if (data.page < 1) {
 			throw new InavalidPageError();
 		}
-		const user = await this.usersRepository.findById(data.userId);
+		const user = await this.usersRepository.findById(data.user_id);
 
 		if (!user) {
 			throw new ResourceNotFoundError();
 		}
 
-		const { patients, count } = await this.patientRepository.list(data.userId, data.page, data.query);
+		const { patients, count } = await this.patientRepository.list(data.user_id, data.page, data.query);
 
 		return {
 			patients,

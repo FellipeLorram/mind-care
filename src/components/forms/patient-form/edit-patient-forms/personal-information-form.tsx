@@ -2,12 +2,13 @@
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { type PatientPersonalInfoSchemaType, PersonalInfoSchema } from '../schema'
+import { type PatientPersonalInfoSchemaType, PatientPersonalInfoSchema } from '../schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { CircleDashed } from 'lucide-react'
 import { useEffect } from 'react'
+import { Textarea } from '@/components/ui/textarea'
 
 interface Props {
 	onSubmit: (data: PatientPersonalInfoSchemaType) => void
@@ -21,8 +22,19 @@ export function EditPersonalInformationForm({
 	loading
 }: Props) {
 	const form = useForm<PatientPersonalInfoSchemaType>({
-		resolver: zodResolver(PersonalInfoSchema),
-		defaultValues: defaultValues ?? ({} as PatientPersonalInfoSchemaType)
+		resolver: zodResolver(PatientPersonalInfoSchema),
+		defaultValues: {
+			address: defaultValues?.address ?? '',
+			age: defaultValues?.age ?? 0,
+			birth_date: defaultValues?.birth_date ?? '',
+			email: defaultValues?.email ?? '',
+			gender: defaultValues?.gender ?? '',
+			name: defaultValues?.name ?? '',
+			nationality: defaultValues?.nationality ?? '',
+			occupation: defaultValues?.occupation ?? '',
+			phones: defaultValues?.phones ?? [],
+			observations: defaultValues?.observations ?? '',
+		}
 	});
 
 	useEffect(() => {
@@ -36,9 +48,6 @@ export function EditPersonalInformationForm({
 				className="space-y-6 pb-8"
 			>
 				<div className='space-y-6 p-6 md:p-8 border rounded-lg shadow-4xl'>
-					<div className='w-full text-center '>
-						<p>Personal Information</p>
-					</div>
 					<FormField
 						control={form.control}
 						name="name"
@@ -56,7 +65,7 @@ export function EditPersonalInformationForm({
 					<div className="w-full flex flex-col md:flex-row items-end justify-between gap-6">
 						<FormField
 							control={form.control}
-							name="birthDate"
+							name="birth_date"
 							render={({ field }) => (
 								<FormItem className="w-full">
 									<FormLabel>Birth date</FormLabel>
@@ -175,17 +184,38 @@ export function EditPersonalInformationForm({
 							</FormItem>
 						)}
 					/>
+
+					<FormField
+						control={form.control}
+						name="observations"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Observations</FormLabel>
+								<FormControl>
+									<Textarea
+										placeholder="observations"
+										className="resize-none"
+										{...field}
+									/>
+
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
 				</div>
-				<div className="w-full ">
-					<Button
-						type="submit"
-						className='w-full'
-					>
-						{loading ? (
-							<CircleDashed className="animate-spin h-5 w-5" />
-						) : "Save"}
-					</Button>
-				</div>
+
+
+				<Button
+					type="submit"
+					className='w-full md:w-1/2 mx-auto'
+				>
+					{loading ? (
+						<CircleDashed className="animate-spin h-5 w-5" />
+					) : "Save"}
+				</Button>
+
 			</form>
 		</Form>
 	)

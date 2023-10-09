@@ -41,8 +41,8 @@ describe('Update Patient Use Case', () => {
 
 	it('should be able to update patient', async () => {
 		const { patient: p } = await sut.execute({
-			userId,
-			patientId: patient.id,
+			user_id: userId,
+			patient_id: patient.id,
 			name: 'John Doe 2',
 			age: 30,
 			address: 'Rua 2',
@@ -57,8 +57,8 @@ describe('Update Patient Use Case', () => {
 
 	it('should not be able to update patient if patient does not exists', async () => {
 		await expect(() => sut.execute({
-			userId,
-			patientId: 'invalid-id',
+			user_id: userId,
+			patient_id: 'invalid-id',
 			name: 'John Doe 2',
 			age: 30,
 			address: 'Rua 2',
@@ -67,8 +67,8 @@ describe('Update Patient Use Case', () => {
 
 	it('should not be able to update patient if user is not the owner', async () => {
 		await expect(() => sut.execute({
-			userId: 'invalid-id',
-			patientId: patient.id,
+			user_id: 'invalid-id',
+			patient_id: patient.id,
 			name: 'John Doe 2',
 			age: 30,
 			address: 'Rua 2',
