@@ -18,48 +18,55 @@ const getDetachedNotesUseCase = MakeGetDetachedNotesUseCase();
 
 export const detachedNotesRouter = createTRPCRouter({
 	create: protectedProcedure
-		.input(CreateDetachedNoteUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const note = await createDetachedNoteUseCase.execute(input);
+		.input(CreateDetachedNoteUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const note = await createDetachedNoteUseCase.execute({
+				...input,
+				userId: ctx.session!.user.id,
+			});
 
-			return {
-				note,
-			};
+			return note
 		}),
 
 	update: protectedProcedure
-		.input(UpdateDetachedNoteUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const { note } = await updateDetachedNoteUseCase.execute(input);
+		.input(UpdateDetachedNoteUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const { note } = await updateDetachedNoteUseCase.execute({
+				...input,
+				userId: ctx.session!.user.id,
+			});
 
-			return {
-				note,
-			};
+			return note;
 		}),
 
 	delete: protectedProcedure
-		.input(DeleteDetachedNoteUseCaseRequest)
-		.mutation(async ({ input }) => {
-			await deleteDetachedNoteUseCase.execute(input);
+		.input(DeleteDetachedNoteUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			await deleteDetachedNoteUseCase.execute({
+				...input,
+				userId: ctx.session!.user.id,
+			});
 		}),
 
 	list: protectedProcedure
-		.input(ListDetachedNoteUseCaseRequest)
-		.query(async ({ input }) => {
-			const { notes } = await listDetachedNotesUseCase.execute(input);
+		.input(ListDetachedNoteUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const { notes } = await listDetachedNotesUseCase.execute({
+				...input,
+				userId: ctx.session!.user.id,
+			});
 
-			return {
-				notes,
-			};
+			return notes
 		}),
 
 	get: protectedProcedure
-		.input(GetDetachedNoteUseCaseRequest)
-		.query(async ({ input }) => {
-			const { note } = await getDetachedNotesUseCase.execute(input);
+		.input(GetDetachedNoteUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const { note } = await getDetachedNotesUseCase.execute({
+				...input,
+				userId: ctx.session!.user.id,
+			});
 
-			return {
-				note,
-			};
+			return note
 		}),
 });

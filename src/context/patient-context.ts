@@ -2,6 +2,7 @@ import {
 	type PatientAppointmentInfoSchemaType,
 	type PatientMedicalInfoSchemaType,
 	type PatientPersonalInfoSchemaType,
+	type PatientNotesSchemaType,
 } from "@/components/forms/patient-form/schema";
 import { atom, useAtom } from "jotai";
 
@@ -21,6 +22,13 @@ export const appointmentInfoAtom = atom<PatientAppointmentInfoSchemaType>({
 	appointment_day: 'monday',
 	appointment_from: '',
 	appointment_to: '',
+});
+
+export const patientNotesAtom = atom<PatientNotesSchemaType>({
+	content: '',
+	id: '',
+	patient_id: '',
+	
 });
 
 export function usePatientContext() {

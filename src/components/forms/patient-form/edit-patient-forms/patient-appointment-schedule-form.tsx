@@ -102,7 +102,7 @@ export function PatientAppointmentScheculeForm({
 						</FormItem>
 					)}
 				/>
-				<div className="w-full flex flex-col md:flex-row items-center gap-6">
+				<div className="w-full flex flex-col md:flex-row items-center gap-6 pt-4">
 					<FormField
 						control={form.control}
 						name="appointment_from"
@@ -163,7 +163,7 @@ export function PatientAppointmentScheculeForm({
 
 				<Button
 					type="submit"
-					className='w-full'
+					className='w-full md:w-1/2 mx-auto'
 				>
 					{loading ? (
 						<CircleDashed className="animate-spin h-5 w-5" />

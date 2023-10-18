@@ -8,6 +8,9 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import ScheduleTime from '@/components/layout/patient-page/schedule-time';
 import { Notes } from '@/components/layout/patient-page/notes';
+import { MedicalHistory } from '@/components/layout/patient-page/medical-history';
+import { Appointments } from '@/components/layout/patient-page/appointments';
+import { AddDetachedNoteDialog } from '@/components/layout/notes/add-detached-note-dialog';
 
 export default function Page() {
 	const { id } = useRouter().query;
@@ -18,7 +21,7 @@ export default function Page() {
 	} = usePatientContext();
 
 	const { data } = api.patients.getProfile.useQuery({
-		patient_id: id as string ?? '1',
+		patient_id: id as string,
 	}, {
 		onSuccess: (data) => {
 			const { patient } = data;
@@ -68,7 +71,7 @@ export default function Page() {
 					<Topbar.Actions />
 				</div>
 			</Topbar.Wrapper>
-			<div className='w-11/12 max-w-6xl mx-auto'>
+			<div className='w-11/12 max-w-6xl mx-auto pb-14'>
 				<div className='w-full flex md:items-center gap-4 items-start justify-between flex-col md:flex-row my-10'>
 					<h1 className='text-2xl font-medium'>
 						{patient?.name}
@@ -78,17 +81,35 @@ export default function Page() {
 							Download
 						</Button>
 						<Link href={`/appointments/new/${patient?.id}`} className={buttonVariants()}>
-							Start appointment
+							Start Appointment
 						</Link>
 					</div>
 				</div>
 
 				<ScheduleTime />
-				<h1 className='text-xl font-medium mt-14 mb-4'>
-					Notes
-				</h1>
+
+				<div className='w-full mt-14 mb-4 flex flex-row justify-between'>
+					<Link
+						className={buttonVariants({
+							className: 'font-medium text-xl',
+							variant: 'ghost',
+						})}
+						href={`/patients/${id as string}/notes`}>
+						Notes
+					</Link>
+
+					<AddDetachedNoteDialog />
+				</div>
 
 				<Notes />
+
+				<MedicalHistory />
+
+				<h1 className='text-xl font-medium mt-14 mb-4'>
+					Appointments
+				</h1>
+
+				<Appointments />
 			</div>
 
 		</>

@@ -16,7 +16,7 @@ export default function ScheduleTime() {
 
 	return (
 		<div className='w-full flex flex-row items-center justify-between border-b border rounded-lg p-6'>
-			{appointmentInfo.appointment_day ? (
+			{appointment_day ? (
 				<div className='flex flex-col'>
 					<p className='text-lg font-semibold'>{daysUppercase[appointment_day]} - {modality}</p>
 					<p className='text-sm'>{appointment_from} - {appointment_to}</p>

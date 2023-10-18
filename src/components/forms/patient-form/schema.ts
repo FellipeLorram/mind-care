@@ -36,4 +36,17 @@ export const PatientAppointmentInfoSchema = z.object({
 });
 
 export type PatientAppointmentInfoSchemaType = z.infer<typeof PatientAppointmentInfoSchema>;
+// content: string;
+// id: string;
+// patient_id: string;
+// createdAt: Date;
+// updatedAt: Date;
+export const PatientNotesSchema = z.object({
+	content: z.string().min(1, { message: 'Content is required' }),
+	id: z.string().optional(),
+	patient_id: z.string().optional(),
+	createdAt: z.date().optional(),
+	updatedAt: z.date().optional(),
+});
 
+export type PatientNotesSchemaType = z.infer<typeof PatientNotesSchema>;

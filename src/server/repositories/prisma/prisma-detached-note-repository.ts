@@ -31,10 +31,10 @@ export class PrismaDetachedNoteRepository implements DetachedNoteRepository {
 	async list(patientId: string, page: number) {
 		const notes = await prisma.detachedNote.findMany({
 			where: { patient_id: patientId },
-			skip: page * 10,
+			skip: (page - 1) * 10,
 			take: 10,
 		});
-
+		
 		return notes;
 	}
 
