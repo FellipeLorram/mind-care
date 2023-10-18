@@ -20,7 +20,7 @@ export function AuthForm() {
 	}
 
 	return (
-		<div className="w-full max-w-xl shadow-3xl border border-slate-400 rounded-lg p-8 mx-auto">
+		<div className="w-full max-w-xl shadow-3xl border rounded-lg p-8 mx-auto">
 			<Logo className="mx-auto w-40" />
 
 			<p className="text-center my-8">
@@ -30,8 +30,7 @@ export function AuthForm() {
 			<Button
 				// eslint-disable-next-line @typescript-eslint/no-misused-promises
 				onClick={handleSignIn}
-				className="p-6 border border-slate-400 mx-auto w-full"
-				variant="secondary"
+				className="p-6 mx-auto w-full"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#000000" fill="none" strokeLinecap="round" strokeLinejoin="round">
 					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
