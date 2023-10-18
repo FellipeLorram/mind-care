@@ -115,7 +115,10 @@ model Appointment {
   patient          Patient  @relation(fields: [patient_id], references: [id])
   patient_id       String
   appointment_time DateTime
-
+  modality         String?
+  appointment_from String?
+  appointment_to   String?
+  appointment_day  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Note      Note[]
