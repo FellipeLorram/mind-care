@@ -16,7 +16,7 @@ export function NoteActions({ editor, onSave }: Props) {
 		!editor?.getHTML();
 
 	return (
-		<div className='mx-auto max-w-3xl border border-b-0 rounded-t-lg flex items-center justify-start md:justify-center flex-row flex-wrap w-full p-2 '>
+		<div className='mx-auto border border-b-0 rounded-t-lg flex items-center justify-start md:justify-center flex-row flex-wrap w-full p-2 '>
 			<Button
 				onClick={() => onSave(editor?.getHTML() ?? '')}
 				disabled={disabledButton}

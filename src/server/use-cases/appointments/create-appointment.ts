@@ -1,28 +1,28 @@
+import { z } from 'zod';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
 import { type UserRepository } from '@/server/repositories/user-repository';
-import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { type Appointment } from '@prisma/client';
 import { type AppointmentRepository } from '@/server/repositories/appointment-repository';
-import { z } from 'zod';
+import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 
 export const CreateAppointmentUseCaseRequest = z.object({
-	patientId: z.string(),
+	patient_id: z.string(),
 	userId: z.string(),
-	date: z.date(),
+	modality: z.enum(['inPerson', 'online', 'hibrid']),
+	duration: z.number(),
+	communication_effectiveness: z.number().optional(),
+	engagement_level: z.number().optional(),
+	progress: z.number().optional(),
+	session_outcome: z.number().optional(),
+	treatment_adherence: z.number().optional(),
+	note: z.string().optional(),
 });
 
 type CreateAppointmentUseCaseRequest = z.infer<typeof CreateAppointmentUseCaseRequest>;
 
-export const CreateAppointmentUseCaseResponse = z.object({
-	appointment: z.object({
-		id: z.string(),
-		appointment_time: z.date(),
-		patient_id: z.string(),
-		createdAt: z.date(),
-		updatedAt: z.date(),
-	})
-});
-
-type CreateAppointmentUseCaseResponse = z.infer<typeof CreateAppointmentUseCaseResponse>;
+interface CreateAppointmentUseCaseResponse {
+	appointment: Appointment;
+}
 
 export class CreateAppointmentUseCase {
 	constructor(
@@ -32,17 +32,16 @@ export class CreateAppointmentUseCase {
 	) { }
 
 	async execute(data: CreateAppointmentUseCaseRequest): Promise<CreateAppointmentUseCaseResponse> {
-		const user = await this.userRepository.findById(data.userId);
-		const patient = await this.patientRepository.findById(data.patientId);
+		const { userId, ...rest } = data;
+		const user = await this.userRepository.findById(userId);
+		const patient = await this.patientRepository.findById(data.patient_id);
 
 		if (!user || !patient || user.id !== patient.user_id) {
 			throw new ResourceNotFoundError();
 		}
 
 		const appointment = await this.appointmentRepository.create({
-			appointment_time: data.date,
-			...data,
-			patient_id: data.patientId,
+			...rest,
 		});
 
 		return {

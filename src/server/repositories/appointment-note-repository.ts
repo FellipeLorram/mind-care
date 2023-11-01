@@ -6,4 +6,5 @@ export interface AppointmentNoteRepository {
 	update(noteid: string, data: Prisma.NoteUncheckedUpdateInput): Promise<Note>;
 	delete(id: string): Promise<void>;
 	list(appointmentId: string, page: number): Promise<Note[]>;
+	listAll(patientId: string): Promise<Note[]>;
 }

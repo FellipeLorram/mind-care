@@ -10,7 +10,9 @@ import ScheduleTime from '@/components/layout/patient-page/schedule-time';
 import { Notes } from '@/components/layout/patient-page/notes';
 import { MedicalHistory } from '@/components/layout/patient-page/medical-history';
 import { Appointments } from '@/components/layout/patient-page/appointments';
-import { AddDetachedNoteDialog } from '@/components/layout/notes/add-detached-note-dialog';
+import { AddDetachedNoteDialog } from '@/components/layout/notes-dialog/add-detached-note-dialog';
+import { PatientName } from '@/components/layout/patient-page/patient-name';
+import { StartAppointment } from '@/components/layout/patient-page/start-appointment-button';
 
 export default function Page() {
 	const { id } = useRouter().query;
@@ -73,16 +75,14 @@ export default function Page() {
 			</Topbar.Wrapper>
 			<div className='w-11/12 max-w-6xl mx-auto pb-14'>
 				<div className='w-full flex md:items-center gap-4 items-start justify-between flex-col md:flex-row my-10'>
-					<h1 className='text-2xl font-medium'>
+					<PatientName>
 						{patient?.name}
-					</h1>
+					</PatientName>
 					<div>
 						<Button variant='secondary' className='mr-4'>
 							Download
 						</Button>
-						<Link href={`/appointments/new/${patient?.id}`} className={buttonVariants()}>
-							Start Appointment
-						</Link>
+						<StartAppointment />
 					</div>
 				</div>
 

@@ -10,17 +10,23 @@ export class InMemoryAppointmentsRepository implements AppointmentRepository {
 	}
 
 	async create(data: Prisma.AppointmentUncheckedCreateInput) {
-		const appointment: Appointment = {
+		const appointment: Omit<Appointment, 'Note'> = {
 			...data,
-			appointment_time: data.appointment_time as Date,
+			modality: data.modality ?? null,
+			duration: data.duration ?? null,
+			communication_effectiveness: data.communication_effectiveness ?? null,
+			engagement_level: data.engagement_level ?? null,
+			progress: data.progress ?? null,
+			session_outcome: data.session_outcome ?? null,
+			treatment_adherence: data.treatment_adherence ?? null,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			id: String(this.Appointments.length + 1),
 		};
 
-		this.Appointments.push(appointment);
+		this.Appointments.push(appointment as Appointment);
 
-		return appointment;
+		return appointment as Appointment;
 	}
 
 	async list(patientId: string, page: number) {
@@ -53,15 +59,12 @@ export class InMemoryAppointmentsRepository implements AppointmentRepository {
 
 		const Appointment: Appointment = {
 			...this.Appointments[AppointmentIndex],
-			appointment_time: data.appointment_time ? data.appointment_time as Date : this.Appointments[AppointmentIndex]!.appointment_time,
-			updatedAt: new Date(),
-			id: id,
-			patient_id: this.Appointments[AppointmentIndex]!.patient_id,
-			createdAt: this.Appointments[AppointmentIndex]!.createdAt,
-		};
+			...data
+		} as Appointment;
 
 		this.Appointments[AppointmentIndex] = Appointment;
 
 		return Appointment;
+
 	}
 } 

@@ -35,16 +35,17 @@ describe('Update Patient Use Case', () => {
 			name: 'John Doe',
 			email: 'johndoe@example.com',
 			age: 20,
-			appointment_duration: 30,
 			address: 'Rua 1',
-			appointment_time: new Date(),
 			modality: 'Presencial',
 			user_id: user.id,
 		});
 
 		const appointment = await appointmentRepository.create({
+			communication_effectiveness: 1,
+			engagement_level: 1,
+			progress: 1,
+			duration: 60,
 			patient_id: patient.id,
-			appointment_time: appointmentDate,
 		});
 
 		patientId = patient.id;
@@ -53,25 +54,22 @@ describe('Update Patient Use Case', () => {
 
 	it('should be able to update an appointment', async () => {
 		const { appointment } = await sut.execute({
+			engagement_level: 5,
 			userId,
 			patientId,
-			appointmentId,
-			appointmentTime: new Date(
-				new Date().setHours(new Date().getHours() + 1)
-			),
+			appointment_id: appointmentId,
 		});
 
-		expect(appointment?.appointment_time).not.toBe(appointmentDate);
+		expect(appointment?.engagement_level).not.toBe(1);
+		expect(appointment?.engagement_level).toBe(5);
 	});
 
 	it('should not be able to update an appointment if patient does not exists', async () => {
 		await expect(() => sut.execute({
 			userId,
 			patientId: 'invalid-id',
-			appointmentId,
-			appointmentTime: new Date(
-				new Date().setHours(new Date().getHours() + 1)
-			),
+			appointment_id: appointmentId,
+			
 
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
@@ -80,10 +78,7 @@ describe('Update Patient Use Case', () => {
 		await expect(() => sut.execute({
 			userId: 'invalid-id',
 			patientId,
-			appointmentId,
-			appointmentTime: new Date(
-				new Date().setHours(new Date().getHours() + 1)
-			),
+			appointment_id: appointmentId,
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
@@ -91,10 +86,7 @@ describe('Update Patient Use Case', () => {
 		await expect(() => sut.execute({
 			userId,
 			patientId,
-			appointmentId: 'invalid-id',
-			appointmentTime: new Date(
-				new Date().setHours(new Date().getHours() + 1)
-			),
+			appointment_id: 'invalid-id',
 
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});

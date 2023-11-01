@@ -64,7 +64,7 @@ model Patient {
   gender      String?
   observation String?
   nationality String?
-  birth_date   DateTime?
+  birth_date  DateTime?
   occupation  String?
   phones      Phone[]
 
@@ -86,6 +86,7 @@ model Patient {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   detachedNote DetachedNote[]
+  Notes        Note[]
 
   @@map("patients")
 }
@@ -111,29 +112,33 @@ model CustomField {
 }
 
 model Appointment {
-  id               String   @id @default(uuid())
-  patient          Patient  @relation(fields: [patient_id], references: [id])
-  patient_id       String
-  appointment_time DateTime
-  modality         String?
-  appointment_from String?
-  appointment_to   String?
-  appointment_day  String?
+  id                          String  @id @default(uuid())
+  patient                     Patient @relation(fields: [patient_id], references: [id])
+  patient_id                  String
+  modality                    String?
+  
+  duration                    Int?
+  communication_effectiveness Int?
+  engagement_level            Int?
+  progress                    Int?
+  session_outcome             Int?
+  treatment_adherence         Int?
+  note      String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Note      Note[]
-
   @@map("appointments")
 }
 
 model Note {
   content        String
   id             String      @id @default(uuid())
-  appointment    Appointment @relation(fields: [appointment_id], references: [id])
   appointment_id String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  patient    Patient  @relation(fields: [patient_id], references: [id])
+  patient_id String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("notes")
 }

@@ -53,4 +53,14 @@ export class PrismaAppointmentNoteRepository implements AppointmentNoteRepositor
 			},
 		});
 	}
+
+	listAll(patientId: string) {
+		const notes = prisma.note.findMany({
+			where: {
+				patient_id: patientId,
+			},
+		});
+
+		return notes;
+	}
 }

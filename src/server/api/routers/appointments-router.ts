@@ -22,48 +22,56 @@ const updateAppointmentUseCase = MakeUpdateAppointmentsUseCase();
 
 export const appointmentsRouter = createTRPCRouter({
 	create: protectedProcedure
-		.input(CreateAppointmentUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const appointment = await createAppointmentUseCase.execute(input);
+		.input(CreateAppointmentUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const appointment = await createAppointmentUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
-			return {
-				appointment,
-			};
+			return appointment
+			
 		}),
 
 	delete: protectedProcedure
-		.input(DeleteAppointmentUseCaseRequest)
-		.mutation(async ({ input }) => {
-			await deleteAppointmentUseCase.execute(input);
+		.input(DeleteAppointmentUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			await deleteAppointmentUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 		}),
 
 	get: protectedProcedure
-		.input(GetAppointmentUseCaseRequest)
-		.query(async ({ input }) => {
-			const appointment = await getAppointmentUseCase.execute(input);
+		.input(GetAppointmentUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const appointment = await getAppointmentUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
-			return {
-				appointment,
-			};
+			return appointment
 		}),
 
 	list: protectedProcedure
-		.input(ListAppointmentsUseCaseRequest)
-		.query(async ({ input }) => {
-			const appointments = await listAppointmentUseCase.execute(input);
+		.input(ListAppointmentsUseCaseRequest.omit({ userId: true }))
+		.query(async ({ input, ctx }) => {
+			const appointments = await listAppointmentUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
 
-			return {
-				appointments,
-			};
+			return appointments
 		}),
-		
-	update: protectedProcedure
-		.input(UpdateAppointmentsUseCaseRequest)
-		.mutation(async ({ input }) => {
-			const appointment = await updateAppointmentUseCase.execute(input);
 
-			return {
-				appointment,
-			};
+	update: protectedProcedure
+		.input(UpdateAppointmentsUseCaseRequest.omit({ userId: true }))
+		.mutation(async ({ input, ctx }) => {
+			const appointment = await updateAppointmentUseCase.execute({
+				...input,
+				userId: ctx.session.user.id
+			});
+
+			return appointment
 		}),
 });

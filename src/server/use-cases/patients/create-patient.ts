@@ -23,16 +23,6 @@ interface CreatePatientUseCaseResponse {
 	patient: Patient;
 }
 
-// enum AvailableWeekDay {
-// 	Monday = 'monday',
-// 	Tuesday = 'tuesday',
-// 	Wednesday = 'wednesday',
-// 	Thursday = 'thursday',
-// 	Friday = 'friday',
-// 	Saturday = 'saturday',
-// 	Sunday = 'sunday',
-// }
-
 export class CreatePatientUseCase {
 	constructor(
 		private patientRepository: PatientRepository,

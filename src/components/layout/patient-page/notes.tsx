@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { Button, buttonVariants } from "@/components/ui/button";
 import { api } from "@/lib/api"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { NoteEditor } from "../notes/note-editor";
+import { NoteEditor } from "../notes-dialog/note-editor";
 import { toast } from "@/components/ui/use-toast";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -39,7 +39,7 @@ export function Notes() {
 	}
 
 	return (
-		<div className="w-full h-60 border flex flex-col items-center justify-center">
+		<div className="w-full h-60 border rounded-lg flex flex-col items-center justify-center">
 			{data && data.length > 0 ? (
 				<div className='w-full flex-1 flex flex-col items-start justify-start overflow-auto'>
 					{data?.map(note => (
@@ -49,8 +49,8 @@ export function Notes() {
 							onOpenChange={() => replace(`${query.id as string}?noteid=${note.id}`)}
 						>
 							<DialogTrigger asChild>
-								<Button variant="outline" className='first:rounded-t p-6 rounded-none border-r-0 w-full flex justify-between items-center flex-row'>
-									<p className="">{format(note.createdAt, 'dd/MM/yyyy hh:mm')}</p>
+								<Button variant="outline" className='first:rounded-t-lg last:rounded-b-lg p-6 rounded-none border-r-0 w-full flex justify-between items-center flex-row'>
+									<p>{format(note.createdAt, 'dd/MM/yyyy hh:mm')}</p>
 									<TooltipProvider>
 										<Tooltip delayDuration={0.2}>
 											<TooltipTrigger asChild className="flex flex-row gap-2">
@@ -61,12 +61,12 @@ export function Notes() {
 													</p>
 												</div>
 											</TooltipTrigger>
-											<TooltipContent className=" max-w-sm">
+											<TooltipContent className="max-w-sm">
 												{parse(note.content)}
 											</TooltipContent>
 										</Tooltip>
 									</TooltipProvider>
-									<p className="">
+									<p>
 										Detached note
 									</p>
 								</Button>

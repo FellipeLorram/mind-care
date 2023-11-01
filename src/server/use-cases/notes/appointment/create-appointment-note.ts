@@ -39,6 +39,7 @@ export class CreateAppointmentNoteUseCase {
 		const note = await this.notesRepository.create({
 			content: data.content,
 			appointment_id: data.appointmentId,
+			patient_id: data.patientId,
 		});
 
 		return {

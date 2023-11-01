@@ -33,8 +33,6 @@ describe('List Appointments Use Case', () => {
 			user_id: userId,
 			age: 10,
 			name: 'john doe',
-			appointment_duration: 30,
-			appointment_time: new Date(),
 			modality: 'Presencial'
 		});
 

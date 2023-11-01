@@ -34,6 +34,7 @@ export class InMemoryAppointmentNotesRepository implements AppointmentNoteReposi
 			content: Note.content as string ?? this.notes[noteIndex]!.content,
 			createdAt: this.notes[noteIndex]!.createdAt,
 			updatedAt: new Date(),
+			patient_id: this.notes[noteIndex]!.patient_id as string,
 			id: id,
 		};
 
@@ -62,5 +63,11 @@ export class InMemoryAppointmentNotesRepository implements AppointmentNoteReposi
 		}
 
 		this.notes.splice(noteIndex, 1);
+	}
+
+	async listAll(patientId: string) {
+		const notes = this.notes.filter((n) => n.patient_id === patientId);
+
+		return notes;
 	}
 } 

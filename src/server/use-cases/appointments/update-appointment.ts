@@ -1,29 +1,27 @@
+import { z } from 'zod';
 import { type AppointmentRepository } from '@/server/repositories/appointment-repository';
 import { type UserRepository } from '@/server/repositories/user-repository';
-import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { type Appointment } from '@prisma/client';
 import { type PatientRepository } from '@/server/repositories/patient-repository';
-import { z } from 'zod';
+import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 
 export const UpdateAppointmentsUseCaseRequest = z.object({
 	userId: z.string(),
 	patientId: z.string(),
-	appointmentId: z.string(),
-	appointmentTime: z.date(),
+	appointment_id: z.string(),
+	communication_effectiveness: z.number().optional(),
+	engagement_level: z.number().optional(),
+	progress: z.number().optional(),
+	session_outcome: z.number().optional(),
+	treatment_adherence: z.number().optional(),
+	note: z.string().optional(),
 });
 
 type UpdateAppointmentsUseCaseRequest = z.infer<typeof UpdateAppointmentsUseCaseRequest>;
 
-export const UpdateAppointmentsUseCaseResponse = z.object({
-	appointment: z.object({
-		id: z.string(),
-		appointment_time: z.date(),
-		patient_id: z.string(),
-		createdAt: z.date(),
-		updatedAt: z.date(),
-	})
-});
-
-type UpdateAppointmentsUseCaseResponse = z.infer<typeof UpdateAppointmentsUseCaseResponse>;
+interface UpdateAppointmentsUseCaseResponse {
+	appointment: Appointment;
+}
 
 export class UpdateAppointmentsUseCase {
 	constructor(
@@ -33,9 +31,9 @@ export class UpdateAppointmentsUseCase {
 	) { }
 
 	async execute(data: UpdateAppointmentsUseCaseRequest): Promise<UpdateAppointmentsUseCaseResponse> {
-		const { userId, patientId, appointmentId, appointmentTime } = data;
+		const { userId, patientId, appointment_id, ...rest } = data;
 
-		const appointmentExists = await this.appointmentRepository.findById(appointmentId);
+		const appointmentExists = await this.appointmentRepository.findById(appointment_id);
 		const user = await this.usersRepository.findById(userId);
 		const patient = await this.patientsRepository.findById(patientId);
 
@@ -43,13 +41,12 @@ export class UpdateAppointmentsUseCase {
 			!appointmentExists
 			|| !user
 			|| !patient
-
 		) {
 			throw new ResourceNotFoundError();
 		}
 
-		const appointment = await this.appointmentRepository.update(appointmentId, {
-			appointment_time: appointmentTime
+		const appointment = await this.appointmentRepository.update(appointment_id, {
+			...rest,
 		});
 
 		return {

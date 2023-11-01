@@ -27,7 +27,7 @@ export function NoteEditor({ content, onSave }: Props) {
         onSave={onSave}
         editor={editor}
       />
-      <div className='w-full max-w-3xl border md:border-b-0 flex-1'>
+      <div className='w-full border md:border-b-0 flex-1'>
         <EditorContent
           className='w-full h-96'
           editor={editor}
@@ -36,3 +36,5 @@ export function NoteEditor({ content, onSave }: Props) {
     </div>
   )
 }
+
+

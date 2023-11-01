@@ -9,12 +9,15 @@ import { MakeUpdateAppointmentNoteUseCase } from "@/server/use-cases/factories/m
 import { UpdateAppointmentNoteUseCaseRequest } from "@/server/use-cases/notes/appointment/update-appointment-note";
 import { MakeDeleteAppointmentNoteUseCase } from "@/server/use-cases/factories/make-delete-appointment-note-use-case";
 import { DeleteAppointmentNoteUseCaseRequest } from "@/server/use-cases/notes/appointment/delete-appointment-note";
+import { ListAllAppointmentsNotesUseCaseRequest } from "@/server/use-cases/notes/appointment/list-all-appointments-notes";
+import { MakeListAllAppointmentNotesUseCase } from "@/server/use-cases/factories/make-list-all-appointments-notes-use-case";
 
 const createAppointmentNoteUseCase = MakeCreateAppointmentNoteUseCase();
 const getAppointmentsNoteUseCase = MakeGetAppointmentNoteUseCase();
 const listAppointmentsNotesUseCase = MakeListAppointmentNotesUseCase()
 const updateAppointmentNoteUseCase = MakeUpdateAppointmentNoteUseCase();
 const deleteAppointmentNoteUseCase = MakeDeleteAppointmentNoteUseCase();
+const listAllAppointmentsNotesUseCase = MakeListAllAppointmentNotesUseCase();
 
 export const appointmentsNotesRouter = createTRPCRouter({
 	create: protectedProcedure
@@ -80,5 +83,17 @@ export const appointmentsNotesRouter = createTRPCRouter({
 			return {
 				success: true,
 			};
+		}),
+
+	listAll: protectedProcedure
+		.input(ListAllAppointmentsNotesUseCaseRequest.omit({ user_id: true }))
+		.query(async ({ input, ctx }) => {
+			const { notes } = await listAllAppointmentsNotesUseCase.execute({
+				...input,
+				user_id: ctx.session.user.id
+			});
+
+			return notes
+
 		}),
 });

@@ -50,7 +50,8 @@ describe('Create Appointment Use Case', () => {
 		const appointment = await sut.execute({
 			patientId,
 			userId,
-			date: new Date(),
+			modality: 'inPerson',
+			duration: 30,
 		});
 
 		expect(appointment).toBeDefined();
@@ -60,7 +61,8 @@ describe('Create Appointment Use Case', () => {
 		await expect(() => sut.execute({
 			patientId,
 			userId: 'invalid_user_id',
-			date: new Date(),
+			duration: 30,
+			modality: 'inPerson',
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
@@ -68,7 +70,8 @@ describe('Create Appointment Use Case', () => {
 		await expect(() => sut.execute({
 			patientId,
 			userId: anotherUserId,
-			date: new Date(),
+			duration: 30,
+			modality: 'inPerson',
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
@@ -76,7 +79,8 @@ describe('Create Appointment Use Case', () => {
 		await expect(() => sut.execute({
 			patientId: 'invalid_patient_id',
 			userId,
-			date: new Date(),
+			duration: 30,
+			modality: 'inPerson',
 		})).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });
