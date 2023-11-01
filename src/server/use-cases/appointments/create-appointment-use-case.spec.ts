@@ -48,7 +48,7 @@ describe('Create Appointment Use Case', () => {
 
 	it('should create a new appointment', async () => {
 		const appointment = await sut.execute({
-			patientId,
+			patient_id: patientId,
 			userId,
 			modality: 'inPerson',
 			duration: 30,
@@ -59,7 +59,7 @@ describe('Create Appointment Use Case', () => {
 
 	it('should not be able create a new appointment with invalid user', async () => {
 		await expect(() => sut.execute({
-			patientId,
+			patient_id: patientId,
 			userId: 'invalid_user_id',
 			duration: 30,
 			modality: 'inPerson',
@@ -68,7 +68,7 @@ describe('Create Appointment Use Case', () => {
 
 	it('Shoult not be able to create a new appointment if the user is not the patients owner', async () => {
 		await expect(() => sut.execute({
-			patientId,
+			patient_id: patientId,
 			userId: anotherUserId,
 			duration: 30,
 			modality: 'inPerson',
@@ -77,7 +77,7 @@ describe('Create Appointment Use Case', () => {
 
 	it('should not be able create a new appointment with invalid patient', async () => {
 		await expect(() => sut.execute({
-			patientId: 'invalid_patient_id',
+			patient_id: 'invalid_patient_id',
 			userId,
 			duration: 30,
 			modality: 'inPerson',
